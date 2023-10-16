@@ -1,7 +1,8 @@
-def main() -> None:
-    """Entry point of the application."""
-    ...
+class Program:
+    def run(self):
+        """Main entry point of the program."""
+        ...
 
 
 if __name__ == "__main__":
-    main()
+    Program().run()
