@@ -49,7 +49,8 @@ INSERT INTO Foods (type, subtype, name, calories, price) VALUES (4, 15, 'Tofu', 
 -- Predefined dishes tables
 CREATE TABLE Dishes (
     id          INTEGER PRIMARY KEY AUTOINCREMENT,
-    name        TEXT    DEFAULT "Unnamed dish :^)"
+    name        TEXT    DEFAULT "Unnamed dish :^)",
+    type        INTEGER DEFAULT 0
 );
 
 CREATE TABLE Dishes_Foods (
@@ -70,8 +71,8 @@ INSERT INTO Dishes (name) VALUES ('Lobster and Vegetables');
 -- Inserting food items into the Dishes_Foods table
 INSERT INTO Dishes_Foods (dish_id, food_id) VALUES (1, 9);
 INSERT INTO Dishes_Foods (dish_id, food_id) VALUES (1, 14);
-INSERT INTO Dishes_Foods (dish_id, food_id) VALUES (2, 3);
-INSERT INTO Dishes_Foods (dish_id, food_id) VALUES (2, 13);
+INSERT INTO Dishes_Foods (dish_id, food_id) VALUES (2, 2);
+INSERT INTO Dishes_Foods (dish_id, food_id) VALUES (2, 21);
 INSERT INTO Dishes_Foods (dish_id, food_id) VALUES (3, 11);
 INSERT INTO Dishes_Foods (dish_id, food_id) VALUES (3, 14);
 INSERT INTO Dishes_Foods (dish_id, food_id) VALUES (4, 10);
