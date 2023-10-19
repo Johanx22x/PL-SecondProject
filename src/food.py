@@ -1,11 +1,13 @@
 from typing import Self
 from enum import IntEnum, auto
 
+
 class FoodType(IntEnum):
     DRINK = auto()
     PROTEIN = auto()
     SIDE_DISH = auto()
     DESSERT = auto()
+
 
 class FoodSubType(IntEnum):
     SODA = auto()
@@ -26,8 +28,8 @@ class FoodSubType(IntEnum):
 
 class Food:
     def __init__(self: Self) -> None:
-        self.id = 0 # NOTE:: Default id, this must be autoincremented or
-                    # populated from the database
+        self.id = 0  # NOTE:: Default id, this must be autoincremented or
+        # populated from the database
         self.type = 0
         self.subtype = 0
         self.name = ""
@@ -44,7 +46,7 @@ class Food:
     def with_type(self: Self, _type: FoodType) -> Self:
         self.type = _type
         return self
-    
+
     def with_subtype(self: Self, subtype: FoodSubType) -> Self:
         self.subtype = subtype
         return self
@@ -60,3 +62,14 @@ class Food:
     def with_price(self: Self, price: float) -> Self:
         self.price = price
         return self
+
+
+if __name__ == "__main__":
+    rice = (
+        Food()
+        .with_id(0)
+        .with_type(FoodType.PROTEIN)
+        .with_name("Rice")
+        .with_calories(70)
+    )
+    print(rice)
