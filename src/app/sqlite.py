@@ -1,24 +1,26 @@
-from typing import Self, List
+from typing import Self, List, Optional
 import sqlite3
-from singleton import SingletonMeta
+from sqlite3 import Cursor
+from app.singleton import SingletonMeta
 
 
 class SQLite(metaclass=SingletonMeta):
     """SQLite class."""
 
-    def __init__(self: Self, db_name: str) -> None:
+    def __init__(self: Self, db_name: Optional[str] = "data.sqlite") -> None:
         """Initialize the SQLite class."""
+        if not db_name:
+            return
         self.db_name = db_name
-        self.connection = sqlite3.connect(db_name)
+        self.connection = sqlite3.connect(db_name, check_same_thread=False)
+        self.connection.execute("PRAGMA foreign_keys = on;")
+        self.connection.execute("PRAGMA encoding = 'UTF-8';")
         self.cursor = self.connection.cursor()
 
-    def execute(self: Self, query: str, values: list = None):
+    def execute(self: Self, query: str, values: List = []) -> Cursor:
         """Execute a query."""
-        if values:
-            self.cursor.execute(query, values)
-        else:
-            self.cursor.execute(query)
-        self.connection.commit()
+        cur = self.cursor.execute(query, values)
+        return cur
 
     def fetch_all(self: Self) -> List:
         """Fetch all results."""
