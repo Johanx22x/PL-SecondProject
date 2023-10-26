@@ -1,6 +1,8 @@
+from sqlite3 import Error
 from typing import Any, List, Self, TypedDict, Optional, Dict
 from enum import IntEnum, auto
 from app.models.model_protocol import Modelable
+from app.sqlite import SQLite
 
 
 class FoodType(IntEnum):
@@ -44,6 +46,8 @@ class FoodForm(TypedDict):
 
 # XXX: This POS uses the builder design pattern
 class Food(Modelable):
+    _db = SQLite()
+
     def __init__(self: Self) -> None:
         self.id = 0
         # XXX: Default id, this must be autoincremented or
@@ -55,7 +59,7 @@ class Food(Modelable):
         self.price = 0.0
 
     def __str__(self: Self) -> str:
-        return f"Food({self.name})"
+        return f'food({self.type}, {self.subtype}, "{self.name}", {self.calories}, {self.price}).'
 
     def to_dict(self: Self) -> Dict:
         return {
@@ -74,15 +78,15 @@ class Food(Modelable):
         return [self.type, self.subtype, self.name, self.calories, self.price]
 
     def with_id(self: Self, id: int) -> Self:
-        self.id = id
+        self.id = int(id)
         return self
 
     def with_type(self: Self, _type: FoodType) -> Self:
-        self.type = _type
+        self.type = int(_type)
         return self
 
     def with_subtype(self: Self, subtype: FoodSubType) -> Self:
-        self.subtype = subtype
+        self.subtype = int(subtype)
         return self
 
     def with_name(self: Self, name: str) -> Self:
@@ -90,25 +94,27 @@ class Food(Modelable):
         return self
 
     def with_calories(self: Self, calories: float) -> Self:
-        self.calories = calories
+        self.calories = float(calories)
         return self
 
     def with_price(self: Self, price: float) -> Self:
-        self.price = price
+        self.price = float(price)
         return self
 
-    @staticmethod
-    def from_form(form: FoodForm) -> "Food":
-        res = Food()
-        for key, value in form:
+    @classmethod
+    def from_form(cls, form: FoodForm) -> Self:
+        res = cls()
+        print(form)
+
+        for key, value in form.items():
             setattr(res, key, value)
         return res
 
-    @staticmethod
-    def from_row(row: List[Any]) -> "Food":
+    @classmethod
+    def from_row(cls, row: List[Any]) -> Self:
         id, _type, subtype, name, calories, price = row
         res = (
-            Food()
+            cls()
             .with_id(id)
             .with_type(_type)
             .with_subtype(subtype)
@@ -118,6 +124,37 @@ class Food(Modelable):
         )
         return res
 
-    @staticmethod
-    def from_rows(rows: List[List[Any]]) -> List:
+    @classmethod
+    def from_rows(cls, rows: List[List[Any]]) -> List[Self]:
         return [Food.from_row(row) for row in rows]
+
+    @classmethod
+    def all(cls) -> List[Self]:
+        cur = cls._db.execute("SELECT * FROM Foods")
+        return cls.from_rows(cur.fetchall())
+
+    @classmethod
+    def find(cls, id: int) -> Optional[Self]:
+        cur = cls._db.execute("SELECT * FROM Foods WHERE id = ?", [id])
+        row = cur.fetchone()
+        if row is None:
+            return None
+        return Food.from_row(row)
+
+    def store(self: Self) -> None:
+        if self.id != 0:
+            raise Error("That record already exists!")
+        cur = Food._db.execute(
+            "INSERT INTO Foods (type, subtype, name, calories, price) VALUES (?, ?, ?, ?, ?)",
+            [self.type, self.subtype, self.name, self.calories, self.price],
+        )
+        if cur.lastrowid:
+            self.id = cur.lastrowid
+        Food._db.connection.commit()
+
+    def save(self: Self) -> None:
+        Food._db.execute(
+            "UPDATE Foods SET type = ?, subtype = ?, name = ?, calories = ?, price = ? WHERE id = ?",
+            [self.type, self.subtype, self.name, self.calories, self.price, self.id],
+        )
+        Food._db.connection.commit()
