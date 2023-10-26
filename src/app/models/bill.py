@@ -34,7 +34,7 @@ class Bill(Modelable):
         return self
 
     def with_date_time(self: Self, date_time: datetime) -> Self:
-        self.date_time = date_time 
+        self.date_time = date_time
         return self
 
     def with_type(self: Self, _type: int) -> Self:
