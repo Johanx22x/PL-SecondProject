@@ -46,6 +46,27 @@ INSERT INTO Foods (type, subtype, name, calories, price) VALUES (4, 15, 'Frozen 
 INSERT INTO Foods (type, subtype, name, calories, price) VALUES (4, 15, 'Tofu', 200.0, 5.49); -- Protein - Vegetarian
 
 
+CREATE TABLE Tables (
+    id          INTEGER PRIMARY KEY AUTOINCREMENT,
+    name        TEXT    DEFAULT "Unnamed table :^)",
+    people      INTEGER DEFAULT 0
+);
+
+CREATE TABLE Bills (
+    id          INTEGER PRIMARY KEY AUTOINCREMENT,
+    total       FLOAT   DEFAULT 0.0,
+    date_time   DATETIME DEFAULT CURRENT_TIMESTAMP,
+    type        INTEGER DEFAULT 0,
+    table_id    INTEGER,
+    FOREIGN KEY (table_id) REFERENCES Tables(id)
+);
+
+CREATE TABLE Orders (
+    id          INTEGER PRIMARY KEY AUTOINCREMENT,
+    bill_id     INTEGER,
+    FOREIGN KEY (bill_id) REFERENCES Bills(id)
+);
+
 -- Predefined dishes tables
 CREATE TABLE Dishes (
     id          INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -58,6 +79,13 @@ CREATE TABLE Dishes_Foods (
     food_id     INTEGER,
     FOREIGN KEY (dish_id) REFERENCES Dishes(id),
     FOREIGN KEY (food_id) REFERENCES Foods(id)
+);
+
+CREATE TABLE Dishes_Orders (
+    dish_id INTEGER,
+    order_id INTEGER,
+    FOREIGN KEY (dish_id) REFERENCES Dishes(id),
+    FOREIGN KEY (order_id) REFERENCES Orders(id)
 );
 
 -- Create predefined dishes
@@ -84,25 +112,3 @@ INSERT INTO Dishes_Foods (dish_id, food_id) VALUES (6, 14);
 
 
 -- Billing system and statistics tables
-CREATE TABLE Tables (
-    id          INTEGER PRIMARY KEY AUTOINCREMENT,
-    name        TEXT    DEFAULT "Unnamed table :^)",
-    people      INTEGER DEFAULT 0
-);
-
-CREATE TABLE Bills (
-    id          INTEGER PRIMARY KEY AUTOINCREMENT,
-    total       FLOAT   DEFAULT 0.0,
-    date_time   DATETIME DEFAULT CURRENT_TIMESTAMP,
-    type        INTEGER DEFAULT 0,
-    table_id    INTEGER,
-    FOREIGN KEY (table_id) REFERENCES Tables(id)
-);
-
-CREATE TABLE Orders (
-    id          INTEGER PRIMARY KEY AUTOINCREMENT,
-    food_id     INTEGER,
-    bill_id     INTEGER,
-    FOREIGN KEY (food_id) REFERENCES Foods(id),
-    FOREIGN KEY (bill_id) REFERENCES Bills(id)
-);
