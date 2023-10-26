@@ -1,42 +1,39 @@
 from flask import abort, request
 from typing import cast
 from app.dishes import bp
-from app.extensions import db
 from app.models.dish import Dish, DishForm
 
 
 @bp.get("/")
-def all_dishes():
-    c = db.execute("SELECT * FROM Dishes")
-    rows = Dish.from_rows(c.fetchall())
-    c.close()
-    db.commit()
-    return [row.to_dict() for row in rows]
+def all():
+    return [dish.to_dict() for dish in Dish.all()]
 
 
 @bp.get("/<id>")
-def dish(id: int):
-    c = db.execute("SELECT * FROM Dishes WHERE id = ?", [id])
-    items = c.fetchall()
-    if len(items) == 0:
+def find(id: int):
+    dish = Dish.find(id)
+    if dish is None:
         abort(404)
-    c.close()
-    db.commit()
-    return Dish.from_row(items[0]).to_dict()
+    return dish.to_dict()
+
 
 @bp.post("/")
-def create_dish():
+def create():
     casted_dish_form: DishForm = cast(DishForm, request.form)
     new_dish = Dish.from_form(casted_dish_form)
-
-    c = db.execute(
-        "INSERT INTO Dishes (name, type) VALUES (?, ?)",
-        new_dish.values,
-    )
-    if c.lastrowid:
-        new_dish.with_id(c.lastrowid)
-
-    c.close()
-    db.commit()
-
+    try:
+        new_dish.store()
+    except Exception:
+        abort(501)
     return new_dish.to_dict()
+
+
+@bp.post("/<id>/update")
+def update(id: int):
+    casted_dish_form: DishForm = cast(DishForm, request.form)
+    to_update = Dish.from_form(casted_dish_form).with_id(id)
+    try:
+        to_update.save()
+    except Exception:
+        abort(501)
+    return to_update.to_dict()
