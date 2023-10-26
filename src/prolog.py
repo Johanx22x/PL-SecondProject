@@ -1,5 +1,5 @@
-from typing import Self
-from swiplserver import PrologMQI, PrologThread
+from typing import Self, Any, List
+from swiplserver import PrologMQI
 from singleton import SingletonMeta
 
 
@@ -14,7 +14,7 @@ class Prolog(metaclass=SingletonMeta):
         # Set encoding
         self.prolog_thread.query("set_prolog_flag(encoding,utf8).")
 
-    def query(self: Self, query_str: str):
+    def query(self: Self, query_str: str) -> (List[Any] | Any | bool | None):
         """Query the Prolog knowledge base."""
         result = self.prolog_thread.query(query_str)
         return result
