@@ -1,1 +1,2 @@
 Flask==3.0.0
+swiplserver==1.0.2
