@@ -13,24 +13,19 @@ class FoodType(IntEnum):
 
 
 class FoodSubType(IntEnum):
-    SODA = auto()
-
+    SODA = auto() # Drink
     NATURAL = auto()
     WATER_BASED = auto()
     MILK_BASED = auto()
-
-    HOT = auto()
+    HOT = auto() # Drinks & Side Dishes
     COLD = auto()
-
-    RED_MEAT = auto()
+    RED_MEAT = auto() # Proteins
     CHICKEN = auto()
     FISH = auto()
     SEAFOOD = auto()
-
-    VEGETABLES = auto()
+    VEGETABLES = auto() # Side Dishes
     CARBS = auto()
-
-    LACTOSE = auto()
+    LACTOSE = auto() # Desserts
     NO_LACTOSE = auto()
     FRUIT = auto()
 
