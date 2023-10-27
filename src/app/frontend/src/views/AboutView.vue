@@ -13,7 +13,7 @@
                             <h3 class="text-center">Johan Rodriguez</h3>
                             <!-- <p class="text-center">@Johanx22x</p> -->
                             <el-tag round effect="plain" class="mb-3" type="info">@Johanx22x</el-tag>
-                            <p class="text-center">A Computer Science student at the Costa Rica'n Institute of Technology.</p>
+                            <p class="text-center">A Computer Science student at the Costa Rica Institute of Technology.</p>
                             <!-- Contact -->
                             <el-row justify="center">
                                 <el-col :span="6">
@@ -41,8 +41,8 @@
                         </template>
                         <el-text>
                             <h3 class="text-center">Aaron Gonzalez</h3>
-                            <el-tag round effect="plain" class="mb-3" type="info">@Johanx22x</el-tag>
-                            <p class="text-center">Literally me.</p>
+                            <el-tag round effect="plain" class="mb-3" type="info">@zSnails</el-tag>
+                            <p class="text-center">Literally zSnails.</p>
                             <!-- Contact -->
                             <el-row justify="center">
                                 <el-col :span="6">
