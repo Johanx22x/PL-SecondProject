@@ -2,8 +2,11 @@
     <el-container class="container-sm d-flex flex-column">
         <div class="d-flex flex-row justify-content-between w-100">
             <div class="w-100 mb-3 mt-3 d-flex">
-                <el-input size="large" type="text" class="h-100 w-50" placeholder="Filter" v-model="filterTerm"></el-input>
-                <el-select class="h-100">
+                <el-input size="large" type="text" class="h-100 w-25 me-3" placeholder="Name" v-model="filterTerm" />
+                <el-select size="large" placeholder="Type" class="h-100">
+                    <el-option>Semen</el-option>
+                </el-select>
+                <el-select size="large" placeholder="SubType" class="h-100">
                     <el-option>Semen</el-option>
                 </el-select>
             </div>
@@ -56,7 +59,7 @@
             }
         },
         computed: {
-            filteredItems() {
+            filteredItems(): Food[] {
                 return this.foodItems.filter((item: Food) => item.name.toLowerCase().includes(this.filterTerm.toLowerCase()));
             }
         },
