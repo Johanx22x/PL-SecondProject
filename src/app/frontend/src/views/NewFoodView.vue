@@ -1,6 +1,6 @@
 <template>
     <el-container class="container-sm justify-content-around">
-        <el-card class="mt-3 w-50 h-50">
+        <el-card class="mt-5 w-50 h-50">
             <template #header>
                 <el-text>
                     <h3>Create New Food</h3>

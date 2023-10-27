@@ -1,6 +1,7 @@
-PRAGMA foreign_keys = on;
 PRAGMA encoding = "UTF-8";
+PRAGMA foreign_keys = ON;  -- Enable foreign key support
 
+-- Foods table with ON DELETE CASCADE
 CREATE TABLE Foods (
     id          INTEGER PRIMARY KEY AUTOINCREMENT,
     type        INTEGER DEFAULT 0,
@@ -10,29 +11,32 @@ CREATE TABLE Foods (
     price       FLOAT   DEFAULT 0.0
 );
 
+-- Tables table with ON DELETE CASCADE
 CREATE TABLE Tables (
     id          INTEGER PRIMARY KEY AUTOINCREMENT,
     name        TEXT    DEFAULT "Unnamed table :^)",
     people      INTEGER DEFAULT 0
 );
 
+-- Bills table with ON DELETE CASCADE
 CREATE TABLE Bills (
     id          INTEGER PRIMARY KEY AUTOINCREMENT,
     total       FLOAT   DEFAULT 0.0,
     date_time   DATETIME DEFAULT CURRENT_TIMESTAMP,
     type        INTEGER DEFAULT 0,
     table_id    INTEGER,
-    FOREIGN KEY (table_id) REFERENCES Tables(id)
+    FOREIGN KEY (table_id) REFERENCES Tables(id) ON DELETE CASCADE
 );
 
+-- Orders table with ON DELETE CASCADE
 CREATE TABLE Orders (
     id          INTEGER PRIMARY KEY AUTOINCREMENT,
     bill_id     INTEGER,
     is_healthy  INTEGER DEFAULT 0,
-    FOREIGN KEY (bill_id) REFERENCES Bills(id)
+    FOREIGN KEY (bill_id) REFERENCES Bills(id) ON DELETE CASCADE
 );
 
--- Predefined dishes tables
+-- Dishes table with ON DELETE CASCADE
 CREATE TABLE Dishes (
     id          INTEGER PRIMARY KEY AUTOINCREMENT,
     name        TEXT    DEFAULT "Unnamed dish :^)",
@@ -40,21 +44,23 @@ CREATE TABLE Dishes (
     is_predef   INTEGER DEFAULT 1
 );
 
+-- Dishes_Foods table with ON DELETE CASCADE
 CREATE TABLE Dishes_Foods (
     dish_id     INTEGER,
     food_id     INTEGER,
-    FOREIGN KEY (dish_id) REFERENCES Dishes(id),
-    FOREIGN KEY (food_id) REFERENCES Foods(id)
+    FOREIGN KEY (dish_id) REFERENCES Dishes(id) ON DELETE CASCADE,
+    FOREIGN KEY (food_id) REFERENCES Foods(id) ON DELETE CASCADE
 );
 
+-- Dishes_Orders table with ON DELETE CASCADE
 CREATE TABLE Dishes_Orders (
     dish_id INTEGER,
     order_id INTEGER,
-    FOREIGN KEY (dish_id) REFERENCES Dishes(id),
-    FOREIGN KEY (order_id) REFERENCES Orders(id)
+    FOREIGN KEY (dish_id) REFERENCES Dishes(id) ON DELETE CASCADE,
+    FOREIGN KEY (order_id) REFERENCES Orders(id) ON DELETE CASCADE
 );
 
--- Billing system and statistics tables
+-- Statistics table without ON DELETE CASCADE
 CREATE TABLE Statistics (
     id              INTEGER PRIMARY KEY AUTOINCREMENT,
     date_time       DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -78,10 +84,30 @@ BEGIN
     UPDATE Statistics SET inventory_items = inventory_items + 1;
 END;
 
+CREATE TRIGGER update_statistics_foods_delete
+AFTER DELETE ON Foods 
+BEGIN
+    UPDATE Statistics SET inventory_items = inventory_items - 1;
+END;
+
 CREATE TRIGGER update_statistics_dishes
 AFTER INSERT ON Dishes 
 BEGIN
     UPDATE Statistics SET menu_items = menu_items + 1;
+END;
+
+CREATE TRIGGER update_statistics_dishes_delete
+AFTER DELETE ON Dishes 
+BEGIN
+    UPDATE Statistics SET menu_items = menu_items - 1;
+END;
+
+-- Create a trigger that detects when a food that is part of a dish is deleted, and deletes the dish 
+CREATE TRIGGER on_delete_food_delete_dish
+BEFORE DELETE ON Foods
+FOR EACH ROW
+BEGIN
+    DELETE FROM Dishes WHERE id IN (SELECT dish_id FROM Dishes_Foods WHERE food_id = OLD.id);
 END;
 
 -- Create first row in the Statistics table 

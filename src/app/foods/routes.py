@@ -37,3 +37,15 @@ def update(id: int):
     except Exception:
         abort(501)
     return to_update.to_dict()
+
+# Delete food 
+@bp.delete("/<id>/delete")
+def delete(id: int):
+    food = Food.find(id)
+    if food is None:
+        abort(404)
+    try:
+        food.delete()
+    except Exception:
+        return abort(501)
+    return food.to_dict()

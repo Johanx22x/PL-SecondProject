@@ -153,3 +153,9 @@ class Food(Modelable):
             [self.type, self.subtype, self.name, self.calories, self.price, self.id],
         )
         Food._db.connection.commit()
+
+    def delete(self: Self) -> None:
+        Food._db.execute(
+            "DELETE FROM Foods WHERE id = ?", [self.id],
+        )
+        Food._db.connection.commit()

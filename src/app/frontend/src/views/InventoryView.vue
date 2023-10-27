@@ -1,6 +1,6 @@
 <template>
     <el-container class="container-sm d-flex flex-column">
-        <el-header class="m-0 p-0 mt-3 text-start h-100 w-100">
+        <el-header class="m-0 p-0 mt-5 text-start h-100 w-100">
             <el-text><h1>Inventory</h1></el-text>
             <el-divider></el-divider>
         </el-header>
@@ -27,10 +27,31 @@
             <ul class="list-inline">
                 <li v-for="(food) in filteredItems" class="mb-3" :key="food.id">
                     <el-card shadow="hover">
-                        <el-descriptions :title="food.name">
-                            <el-descriptions-item label="Calories">{{ food.calories }}</el-descriptions-item>
-                            <el-descriptions-item label="Price">${{ food.price }}</el-descriptions-item>
-                        </el-descriptions>
+                        <el-container class="d-flex flex-row">
+                            <el-container class="w-100">
+                                <el-descriptions 
+                                    :title="food.name" 
+                                    class="w-100"
+                                    >
+                                    <el-descriptions-item label="Calories:" :width="500">{{ food.calories }}</el-descriptions-item>
+                                    <el-descriptions-item label="Price:">${{ food.price }}</el-descriptions-item>
+                                </el-descriptions>
+                            </el-container>
+                            <el-container class="d-flex flex-column justify-content-between ms-3">
+                                <el-button type="danger" class="text-decoration-none mb-3 w-100" size="large" @click="this.delete(food.id)">
+                                    <template #icon>
+                                        <font-awesome-icon icon="fa-solid fa-trash" size="xl" />
+                                    </template>
+                                    Delete 
+                                </el-button>
+                                <el-button type="primary" class="text-decoration-none w-100 m-0" size="large" tag="router-link" :to="'/inventory/edit/' + food.id">
+                                    <template #icon>
+                                        <font-awesome-icon icon="fa-solid fa-edit" size="xl" />
+                                    </template>
+                                    Edit 
+                                </el-button>
+                            </el-container>
+                        </el-container>
                     </el-card>
                 </li>
             </ul>
@@ -41,6 +62,7 @@
     import { defineComponent } from "vue";
     import axios from "axios";
     import Food from "@/food";
+    import { ElNotification } from "element-plus";
 
 
     export default defineComponent({
@@ -55,7 +77,28 @@
             async fetchFoods() {
                 let res = await axios.get<Food[]>("/api/food");
                 return res;
-            }
+            },
+
+            async deleteFood(id: number) {
+                return await axios.delete("/api/food/" + id + "/delete");
+            },
+
+            delete(id: number) {
+                this.deleteFood(id).then(() => {
+                    ElNotification({
+                        title: "Success",
+                        message: "Food deleted successfully",
+                        type: "success"
+                    });
+                    this.foodItems = this.foodItems.filter((item: Food) => item.id !== id);
+                }).catch(() => {
+                    ElNotification({
+                        title: "Error",
+                        message: "Food could not be deleted, it may be in use",
+                        type: "error"
+                    });
+                });
+            },
         },
         computed: {
             filteredItems(): Food[] {
