@@ -4,7 +4,6 @@
     class="el-menu-demo"
     mode="horizontal"
     :ellipsis="false"
-    @select="handleSelect"
   >
     <el-menu-item index="0" class="m-0 p-0">
       <router-link to="/" style="text-decoration: none;" class="logo">
@@ -52,12 +51,7 @@ export default defineComponent({
     return {
       activeIndex: '0',
     };
-  },
-  methods: {
-    handleSelect(key: string) {
-      console.log(key);
-    },
-  },
+  }
 });
 </script>
 
