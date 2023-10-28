@@ -95,7 +95,17 @@ export default createStore({
                     }
                 ]
             }
-        ]
+        ],
+        paymentTypes: [
+            {
+                label: "Cash",
+                value: 1
+            },
+            {
+                label: "Credit Card",
+                value: 2
+            }
+        ],
     },
     getters: {
     },

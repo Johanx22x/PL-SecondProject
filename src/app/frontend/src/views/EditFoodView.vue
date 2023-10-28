@@ -3,7 +3,7 @@
         <el-card class="mt-5 w-50 h-50">
             <template #header>
                 <el-text>
-                    <h3>Create New Food</h3>
+                    <h3>Edit Food: {{ form.name }}</h3>
                 </el-text>
             </template>
             <el-form :model="form" ref="formRef" :rules="formRules" label-position="top">
@@ -22,9 +22,10 @@
                     <el-cascader
                         size="large"
                         name="type"
+                        v-model="this.default"
                         :options="$store.state.foodTypes"
                         :props="{ expandTrigger: 'hover' }"
-                        @change="(item) => {form.type = item[0]; form.subtype = item[1]}"
+                        @change="(item) => {form.type = item[0]; form.subtype = item[1]; this.default = [item[0], item[1]]}"
                         class="w-100" />
                 </el-form-item>
             </el-form>
@@ -33,7 +34,7 @@
                     <template #icon>
                         <font-awesome-icon icon="fa-solid fa-check" size="xl" />
                     </template>
-                    Submit
+                    Update
                 </el-button>
                 <el-button type="danger" class="text-decoration-none" size="large" tag="router-link" to='/inventory'>
                     <template #icon>
@@ -53,6 +54,14 @@
     import axios from "axios";
 
     export default defineComponent({
+        async mounted() {
+            let result = await axios.get("/api/food/" + this.$route.params.id);
+            if (result.status === 200) {
+                this.form = result.data;
+            }
+
+            this.default = [this.form.type, this.form.subtype];
+        },
         methods: {
             submit() {
                 (this.$refs["formRef"] as FormInstance).validate((valid: boolean, _) => {
@@ -72,14 +81,14 @@
                     // @ts-ignore
                     bodyFormData.append(key, value);
                 }
-                let result = await axios.post("/api/food/", bodyFormData);
+                let result = await axios.post("/api/food/" + this.$route.params.id + "/update", bodyFormData);
                 if (result.status === 200) {
                     ElNotification({
                         type: 'success',
                         title: 'Success!',
-                        message: 'Food created successfully!'
+                        message: 'Food updated successfully!'
                     });
-                    this.$router.push('/inventory');
+                    this.$router.push("/inventory");
                 }
             },
             formWasInvalid() {
@@ -93,6 +102,7 @@
         },
         data() {
             return {
+                default: [0, 0],
                 form: {
                     name: "",
                     calories: 0.0,

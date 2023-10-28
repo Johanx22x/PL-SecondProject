@@ -17,6 +17,17 @@ def find(id: int):
     return bill.to_dict()
 
 
+@bp.get("/<id>/orders")
+def get_orders(id: int):
+    bill = Bill.find(id)
+    if bill is None:
+        abort(404)
+    orders = bill.orders
+    if orders is None:
+        abort(404)
+    return list(map(lambda order: order.to_dict(), orders))
+
+
 @bp.post("/")
 def create():
     casted_bill_form: BillForm = cast(BillForm, request.form)

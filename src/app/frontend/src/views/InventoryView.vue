@@ -32,12 +32,14 @@
                                 <el-descriptions 
                                     :title="food.name" 
                                     class="w-100"
+                                    column="2"
                                     >
-                                    <el-descriptions-item label="Calories:" :width="500">{{ food.calories }}</el-descriptions-item>
-                                    <el-descriptions-item label="Price:">${{ food.price }}</el-descriptions-item>
+                                    <el-descriptions-item label="Calories:" :width="200">{{ food.calories }}</el-descriptions-item>
+                                    <el-descriptions-item label="Price:" :width="200">${{ food.price }}</el-descriptions-item>
+                                    <el-descriptions-item label="Category:">{{ $store.state.foodTypes.find((item) => item.value === food.type)?.label }} > {{ $store.state.foodTypes.find((item) => item.value === food.type)?.children?.find((item) => item.value === food.subtype)?.label }}</el-descriptions-item>
                                 </el-descriptions>
                             </el-container>
-                            <el-container class="d-flex flex-column justify-content-between ms-3">
+                            <el-container class="d-flex flex-column justify-content-center ms-3">
                                 <el-button type="danger" class="text-decoration-none mb-3 w-100" size="large" @click="this.delete(food.id)">
                                     <template #icon>
                                         <font-awesome-icon icon="fa-solid fa-trash" size="xl" />

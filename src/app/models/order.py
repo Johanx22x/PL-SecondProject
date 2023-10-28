@@ -7,6 +7,7 @@ from app.sqlite import SQLite
 class OrderForm(TypedDict):
     id: Optional[int]
     bill_id: int
+    is_healthy: int
 
 
 class Order(Modelable):
@@ -25,10 +26,14 @@ class Order(Modelable):
         self.bill_id = int(bill_id)
         return self
 
+    def with_is_healthy(self: Self, is_healthy: int) -> Self:
+        self.is_healthy = int(is_healthy)
+        return self
+
     @classmethod
     def from_row(cls, row: List[Any]) -> Self:
-        id, bill_id = row
-        return cls().with_id(id).with_bill_id(bill_id)
+        id, bill_id, is_healthy = row
+        return cls().with_id(id).with_bill_id(bill_id).with_is_healthy(is_healthy)
 
     @classmethod
     def from_rows(cls, rows: List[List[Any]]) -> List[Self]:
@@ -64,7 +69,7 @@ class Order(Modelable):
         Order._db.execute("UPDATE Orders SET bill_id = ? WHERE id = ?", [self.bill_id, self.id])
 
     def to_dict(self: Self) -> Dict:
-        return {"id": self.id, "bill_id": self.bill_id}
+        return {"id": self.id, "bill_id": self.bill_id, "is_healthy": self.is_healthy}
 
     @property
     def dishes(self: Self) -> List[Dish]:
