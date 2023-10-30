@@ -1,4 +1,4 @@
-from typing import Self, List, Any, Dict
+from typing import Self, List, Any, Dict, Optional
 from datetime import datetime
 from app.models.model_protocol import Modelable
 from app.sqlite import SQLite
@@ -54,7 +54,7 @@ class Statistic(Modelable):
         return Statistic.from_rows(cur.fetchall())
 
     @classmethod
-    def find(cls, id: int) -> Self:
+    def find(cls, id: int) -> Optional[Self]:
         cur = cls._db.execute("SELECT * FROM Statistics WHERE id = ?", [id])
         row = cur.fetchone()
         if row is None:
@@ -62,7 +62,7 @@ class Statistic(Modelable):
         return cls.from_row(row)
 
     @classmethod
-    def latest(cls) -> Self:
+    def latest(cls) -> Optional[Self]:
         cur = cls._db.execute("SELECT * FROM Statistics ORDER BY id DESC LIMIT 1")
         row = cur.fetchone()
         if row is None:
