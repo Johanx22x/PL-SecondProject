@@ -25,37 +25,61 @@
         </div>
         <el-scrollbar height="70vh">
             <ul class="list-inline">
-                <li v-for="(food) in filteredItems" class="mb-3" :key="food.id">
-                    <el-card shadow="hover">
-                        <el-container class="d-flex flex-row">
-                            <el-container class="w-100">
-                                <el-descriptions 
-                                    :title="food.name" 
-                                    class="w-100"
-                                    column="2"
-                                    >
-                                    <el-descriptions-item label="Calories:" :width="200">{{ food.calories }}</el-descriptions-item>
-                                    <el-descriptions-item label="Price:" :width="200">${{ food.price }}</el-descriptions-item>
-                                    <el-descriptions-item label="Category:">{{ $store.state.foodTypes.find((item) => item.value === food.type)?.label }} > {{ $store.state.foodTypes.find((item) => item.value === food.type)?.children?.find((item) => item.value === food.subtype)?.label }}</el-descriptions-item>
-                                </el-descriptions>
+                <el-skeleton :loading="loading" :count="10" animated>
+                    <template #template>
+                        <li class="mb-3">
+                            <el-card shadow="hover">
+                                <el-container class="d-flex w-100 flex-column">
+                                    <el-skeleton-item variant="h3" style="width: 10%;" class="mb-3"></el-skeleton-item>
+                                    <el-skeleton-item variant="text" class="w-100 mb-3"></el-skeleton-item>
+                                    <el-skeleton-item variant="text" class="w-75 mb-3"></el-skeleton-item>
+                                    <el-skeleton-item variant="text" class="w-25"></el-skeleton-item>
+                                </el-container>
+                            </el-card>
+                        </li>
+                        <li class="mb-3">
+                            <el-card shadow="hover">
+                                <el-container class="w-100 d-flex flex-column">
+                                    <el-skeleton-item variant="h3" style="width: 15%;" class="mb-3"></el-skeleton-item>
+                                    <el-skeleton-item variant="text" class="w-50 mb-3"></el-skeleton-item>
+                                    <el-skeleton-item variant="text" class="w-25 mb-3"></el-skeleton-item>
+                                    <el-skeleton-item variant="text" class="w-75"></el-skeleton-item>
+                                </el-container>
+                            </el-card>
+                        </li>
+                    </template>
+                    <li v-for="(food) in filteredItems" class="mb-3" :key="food.id">
+                        <el-card shadow="hover">
+                            <el-container class="d-flex flex-row">
+                                <el-container class="w-100">
+                                    <el-descriptions 
+                                        :title="food.name" 
+                                        class="w-100"
+                                        :column="2"
+                                        >
+                                        <el-descriptions-item label="Calories:" :width="200">{{ food.calories }}</el-descriptions-item>
+                                        <el-descriptions-item label="Price:" :width="200">${{ food.price }}</el-descriptions-item>
+                                        <el-descriptions-item label="Category:">{{ $store.state.foodTypes.find((item) => item.value === food.type)?.label }} > {{ $store.state.foodTypes.find((item) => item.value === food.type)?.children?.find((item) => item.value === food.subtype)?.label }}</el-descriptions-item>
+                                    </el-descriptions>
+                                </el-container>
+                                <el-container class="d-flex flex-column justify-content-center ms-3">
+                                    <el-button type="danger" class="text-decoration-none mb-3 w-100" size="large" @click="this.delete(food.id)">
+                                        <template #icon>
+                                            <font-awesome-icon icon="fa-solid fa-trash" size="xl" />
+                                        </template>
+                                        Delete 
+                                    </el-button>
+                                    <el-button type="primary" class="text-decoration-none w-100 m-0" size="large" tag="router-link" :to="'/inventory/edit/' + food.id">
+                                        <template #icon>
+                                            <font-awesome-icon icon="fa-solid fa-edit" size="xl" />
+                                        </template>
+                                        Edit 
+                                    </el-button>
+                                </el-container>
                             </el-container>
-                            <el-container class="d-flex flex-column justify-content-center ms-3">
-                                <el-button type="danger" class="text-decoration-none mb-3 w-100" size="large" @click="this.delete(food.id)">
-                                    <template #icon>
-                                        <font-awesome-icon icon="fa-solid fa-trash" size="xl" />
-                                    </template>
-                                    Delete 
-                                </el-button>
-                                <el-button type="primary" class="text-decoration-none w-100 m-0" size="large" tag="router-link" :to="'/inventory/edit/' + food.id">
-                                    <template #icon>
-                                        <font-awesome-icon icon="fa-solid fa-edit" size="xl" />
-                                    </template>
-                                    Edit 
-                                </el-button>
-                            </el-container>
-                        </el-container>
-                    </el-card>
-                </li>
+                        </el-card>
+                    </li>
+                </el-skeleton>
             </ul>
         </el-scrollbar>
     </el-container>
@@ -72,7 +96,8 @@
             return {
                 foodItems: [] as Food[],
                 filterTerm: "",
-                selectedValue: null
+                selectedValue: null,
+                loading: true
             }
         },
         methods: {
@@ -96,7 +121,7 @@
                 }).catch(() => {
                     ElNotification({
                         title: "Error",
-                        message: "Food could not be deleted, it may be in use",
+                        message: "Food could not be deleted, it may be in use by a dish",
                         type: "error"
                     });
                 });
@@ -114,6 +139,7 @@
         async mounted() {
             let foods = await this.fetchFoods();
             this.foodItems = foods.data;
+            this.loading = false;
         },
 
     });
