@@ -14,11 +14,14 @@
                     <el-form-item label="Calories" for="calories" prop="calories">
                         <el-input-number size="large" name="calories" v-model.number="form.calories" :min="0"/>
                     </el-form-item>
-                    <el-form-item label="Price" for="price" prop="price">
+                    <el-form-item 
+                        label="Price"
+                        for="price"
+                        prop="price" >
                         <el-input-number size="large" name="price" v-model.number="form.price" :min="0"/>
                     </el-form-item>
                 </div>
-                <el-form-item label="Type" prop="type" for="type">
+                <el-form-item label="Type" prop="subtype" for="type">
                     <el-cascader
                         size="large"
                         name="type"
@@ -56,41 +59,26 @@
     export default defineComponent({
         methods: {
             submit() {
-                (this.$refs["formRef"] as FormInstance).validate((valid: boolean, _) => {
+                (this.$refs["formRef"] as FormInstance).validate(async (valid: boolean, _) => {
                     if (valid) {
-                        this.formWasValid();
-                    } else {
-                        this.formWasInvalid();
+                        try {
+                            await axios.post("/api/food/", this.form);
+                            ElNotification({
+                                type: 'success',
+                                title: 'Success!',
+                                message: 'Food created successfully!'
+                            });
+                            this.$router.push('/inventory');
+                        } catch (e) {
+                            ElNotification({
+                                type: 'error',
+                                title: 'Error creating food',
+                                message: 'An error occurred while creating the food, please try again'
+                            });
+                        }
                     }
                 });
             },
-            goBack() {
-            },
-            async formWasValid() {
-                // @ts-ignore
-                let bodyFormData = new FormData();
-                for (const [key, value] of Object.entries(this.form)) {
-                    // @ts-ignore
-                    bodyFormData.append(key, value);
-                }
-                let result = await axios.post("/api/food/", bodyFormData);
-                if (result.status === 200) {
-                    ElNotification({
-                        type: 'success',
-                        title: 'Success!',
-                        message: 'Food created successfully!'
-                    });
-                    this.$router.push('/inventory');
-                }
-            },
-            formWasInvalid() {
-                ElNotification({
-                    type: 'error',
-                    title: 'Error!',
-                    message: 'One or more fields are invalid!'
-                });
-            }
-
         },
         data() {
             return {
@@ -105,19 +93,32 @@
                     name: [
                         { required: true, message: 'Please enter a name.' }
                     ],
-                    calories: [
-                        { required: true, message: 'Please enter some calories.' },
-                    ],
-                    price: [
-                        { required: true, message: 'Please enter a price.' },
-                    ],
-                    type: [
-                        {
-                            required: true,
-                            message: 'Please select the food\'s type',
-                            trigger: 'change'
+                    price: { 
+                        required: true,
+                        type: 'number',
+                        asyncValidator: (_: any, value: number) => {
+                            return new Promise((resolve, reject) => {
+                                if (value < 1) {
+                                    reject('Price must be greater than 0')
+                                } else {
+                                    resolve(null);
+                                }
+                            });
                         }
-                    ]
+                    },
+                    subtype: {
+                        required: true,
+                        type: 'number',
+                        asyncValidator: (_: any, value: number) => {
+                            return new Promise((resolve, reject) => {
+                                if (value === 0) {
+                                    reject('Please select a type and subtype');
+                                } else {
+                                    resolve(null);
+                                }
+                            });
+                        }
+                    }
                 }
             };
         },

@@ -64,41 +64,31 @@
         },
         methods: {
             submit() {
-                (this.$refs["formRef"] as FormInstance).validate((valid: boolean, _) => {
+                (this.$refs["formRef"] as FormInstance).validate(async (valid: boolean, _) => {
                     if (valid) {
-                        this.formWasValid();
-                    } else {
-                        this.formWasInvalid();
-                    }
+                        try{
+                            await axios.post(`/api/food/${this.id}`, this.form);
+                            ElNotification({
+                                type: 'success',
+                                title: 'Success!',
+                                message: 'Food updated successfully!'
+                            });
+                            this.$router.push("/inventory");
+                        } catch (e) {
+                            ElNotification({
+                                type: 'error',
+                                title: 'Error!',
+                                message: 'One or more fields are invalid!'
+                            });
+                        }
+                    } 
                 });
             },
-            goBack() {
-            },
-            async formWasValid() {
-                // @ts-ignore
-                let bodyFormData = new FormData();
-                for (const [key, value] of Object.entries(this.form)) {
-                    // @ts-ignore
-                    bodyFormData.append(key, value);
-                }
-                let result = await axios.post("/api/food/" + this.$route.params.id + "/update", bodyFormData);
-                if (result.status === 200) {
-                    ElNotification({
-                        type: 'success',
-                        title: 'Success!',
-                        message: 'Food updated successfully!'
-                    });
-                    this.$router.push("/inventory");
-                }
-            },
-            formWasInvalid() {
-                ElNotification({
-                    type: 'error',
-                    title: 'Error!',
-                    message: 'One or more fields are invalid!'
-                });
+        },
+        props: {
+            id: {
+                type: Number
             }
-
         },
         data() {
             return {
@@ -114,19 +104,32 @@
                     name: [
                         { required: true, message: 'Please enter a name.' }
                     ],
-                    calories: [
-                        { required: true, message: 'Please enter some calories.' },
-                    ],
-                    price: [
-                        { required: true, message: 'Please enter a price.' },
-                    ],
-                    type: [
-                        {
-                            required: true,
-                            message: 'Please select the food\'s type',
-                            trigger: 'change'
+                    price: { 
+                        required: true,
+                        type: 'number',
+                        asyncValidator: (_: any, value: number) => {
+                            return new Promise((resolve, reject) => {
+                                if (value < 1) {
+                                    reject('Price must be greater than 0')
+                                } else {
+                                    resolve(null);
+                                }
+                            });
                         }
-                    ]
+                    },
+                    subtype: {
+                        required: true,
+                        type: 'number',
+                        asyncValidator: (_: any, value: number) => {
+                            return new Promise((resolve, reject) => {
+                                if (value === 0) {
+                                    reject('Please select a type and subtype');
+                                } else {
+                                    resolve(null);
+                                }
+                            });
+                        }
+                    }
                 }
             };
         },

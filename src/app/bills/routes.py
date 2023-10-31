@@ -35,7 +35,7 @@ def create():
     try:
         new_bill.store()
     except Exception:
-        abort(501)
+        abort(500)
     return new_bill.to_dict()
 
 
@@ -46,5 +46,5 @@ def update(id: int):
     try:
         to_update.save()
     except Exception:
-        abort(501)
+        abort(500)
     return to_update.to_dict()

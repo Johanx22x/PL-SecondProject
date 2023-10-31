@@ -19,21 +19,32 @@ def find(id: int):
 
 @bp.post("/")
 def create():
-    casted_dish_form: DishForm = cast(DishForm, request.form)
+    casted_dish_form: DishForm = cast(DishForm, request.json)
     new_dish = Dish.from_form(casted_dish_form)
     try:
         new_dish.store()
     except Exception:
-        abort(501)
+        abort(500)
     return new_dish.to_dict()
 
 
-@bp.post("/<id>/update")
+@bp.post("/<id>")
 def update(id: int):
-    casted_dish_form: DishForm = cast(DishForm, request.form)
+    casted_dish_form: DishForm = cast(DishForm, request.json)
     to_update = Dish.from_form(casted_dish_form).with_id(id)
     try:
         to_update.save()
     except Exception:
-        abort(501)
+        abort(500)
     return to_update.to_dict()
+
+@bp.delete("/<id>")
+def delete(id: int):
+    dish = Dish.find(id)
+    if dish is None:
+        abort(404)
+    try:
+        dish.delete()
+    except Exception:
+        return abort(500)
+    return dish.to_dict()

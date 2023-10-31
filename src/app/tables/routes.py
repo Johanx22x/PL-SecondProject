@@ -24,7 +24,7 @@ def create():
     try:
         new_table.store()
     except Exception:
-        abort(501)
+        abort(500)
     return new_table.to_dict()
 
 
@@ -35,7 +35,7 @@ def update():
     try:
         to_update.save()
     except Exception:
-        abort(501)
+        abort(500)
     return to_update.to_dict()
 
 @bp.delete("/<id>")
