@@ -171,7 +171,9 @@ visualizar el total de ventas, el total productos en inventario, el total
 de platos en el menú, el total de ordenes, un gráfico lineal con la 
 cantidad de ventas y ganancias por día, un gráfico de barras con los  
 productos más vendidos y un gráfico de barras con los platos más vendidos, 
-ver figura \ref{fig:statistics}.
+ver figura \ref{fig:statistics}. Para la generación de los gráficos se 
+utilizó la biblioteca Google Charts, la cual permite la creación de
+gráficos de forma sencilla.
 
 \begin{figure}[H]
     \centering
@@ -236,3 +238,31 @@ Por el lado de Prolog, se crearón reglas para la creación de platos
 a partir de criterios establecidos por el cliente, de modo que 
 se generen todas las combinaciones posibles de productos, siempre y
 cuando cumplan con los criterios establecidos por el cliente.
+
+A grandes rasgos, la solución del problema planteado logra 
+incorporar los patrones de diseño necesarios para el correcto 
+funcionamiento de la aplicación, además de que cumple con el hecho 
+de utilizar los paradigmas de programación orientada a objetos y 
+programación lógica. Por el lado de la interfaz gráfica, gracias a 
+Vue.js y typeScript, lenguaje que también es de carácter multiparadigma 
+e incorpora el paradigma de programación orientada a objetos,
+se logra una interfaz gráfica dinámica y atractiva, la cual cumple con los
+requerimientos establecidos en la especificación del proyecto, además de que se
+logra una interfaz gráfica fácil de utilizar.
+
+\subsection{Cambios en la Especificación}
+
+En esta sección se discutirán los cambios realizados durante el desarrollo
+de la aplicación, y el porqué de los mismos, con respecto a la especificación
+del proyecto.
+
+Se decidió utilizar el framework Vue.js para el desarrollo de la 
+interfaz gráfica, en lugar de una biblioteca de Python, previamente 
+se especificó el porqué de esta decisión, basicamente, se hizo para facilitar 
+y mejorar el resultado final con respecto a la interfaz gráfica.
+
+Se decidió omitir implementar los metodos de filter/map/reduce 
+en Python en la sección de estadísticas, debido a que obtener estos datos 
+listos desde la base de datos es relativamente mucho más sencillo y 
+rápido, por lo cual en esta sección se decidió utilizar SQL para obtener
+los datos necesarios.
