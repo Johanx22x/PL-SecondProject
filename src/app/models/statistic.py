@@ -76,12 +76,12 @@ class Statistic(Modelable):
 
     @classmethod
     def top_menu_items(cls) -> List[Self]:
-        cur = cls._db.execute("SELECT d.name AS name, COUNT(do.dish_id) AS amount FROM Dishes d JOIN Dishes_Orders do ON do.dish_id = d.id JOIN Orders o ON o.id = do.order_id WHERE o.is_healthy = 0 AND d.is_predef = 1 GROUP BY d.name ORDER BY amount DESC LIMIT 3;")
+        cur = cls._db.execute("SELECT d.name AS name, COUNT(do.dish_id) AS amount FROM Dishes d JOIN Dishes_Orders do ON do.dish_id = d.id JOIN Orders o ON o.id = do.order_id WHERE do.is_healthy = 0 AND d.is_predef = 1 GROUP BY d.name ORDER BY amount DESC LIMIT 3;")
         return cur.fetchall()
 
     @classmethod
     def top_inventory_items(cls) -> List[Self]:
-        cur = cls._db.execute("SELECT f.name AS name, COUNT(fo.food_id) AS amount FROM Foods f JOIN Dishes_Foods fo ON fo.food_id = f.id JOIN Dishes d ON d.id = fo.dish_id JOIN Dishes_Orders do ON do.dish_id = d.id JOIN Orders o ON o.id = do.order_id WHERE o.is_healthy = 1 AND d.is_predef = 0 GROUP BY f.name ORDER BY amount DESC LIMIT 3;")
+        cur = cls._db.execute("SELECT f.name AS name, COUNT(fo.food_id) AS amount FROM Foods f JOIN Dishes_Foods fo ON fo.food_id = f.id JOIN Dishes d ON d.id = fo.dish_id JOIN Dishes_Orders do ON do.dish_id = d.id JOIN Orders o ON o.id = do.order_id WHERE do.is_healthy = 1 AND d.is_predef = 0 GROUP BY f.name ORDER BY amount DESC LIMIT 3;")
         return cur.fetchall()
 
     def to_dict(self: Self) -> Dict:

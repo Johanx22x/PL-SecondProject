@@ -37,3 +37,14 @@ def update():
     except Exception:
         abort(501)
     return to_update.to_dict()
+
+@bp.delete("/<id>")
+def delete(id: int):
+    table = Table.find(id)
+    if table is None:
+        abort(404)
+    try:
+        table.delete()
+    except Exception:
+        abort(501)
+    return table.to_dict()
