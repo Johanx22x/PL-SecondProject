@@ -3,7 +3,7 @@
         <el-card class="mt-5 w-50 h-50">
             <template #header>
                 <el-text>
-                    <h3>Create New Food</h3>
+                    <h3>Create New Dish</h3>
                 </el-text>
             </template>
             <el-form :model="form" ref="formRef" label-position="top" :rules="formRules">

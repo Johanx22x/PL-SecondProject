@@ -8,6 +8,7 @@ from app.sqlite import SQLite
 
 class BillForm(TypedDict):
     id: Optional[int]
+    name: str
     total: float
     date_time: datetime
     type: int
@@ -21,6 +22,7 @@ class Bill(Modelable):
     def __init__(self: Self) -> None:
         super().__init__()
         self.id = 0
+        self.name = ""
         self.total = 0.0
         self.date_time: datetime = datetime.now()
         self.type = 0
@@ -29,6 +31,10 @@ class Bill(Modelable):
 
     def with_id(self: Self, id: int) -> Self:
         self.id = int(id)
+        return self
+
+    def with_name(self: Self, name: str) -> Self:
+        self.name = str(name)
         return self
 
     def with_total(self: Self, total: float) -> Self:
@@ -53,10 +59,11 @@ class Bill(Modelable):
 
     @classmethod
     def from_row(cls, row: List[Any]) -> Self:
-        id, total, date_time, _type, table_id, is_paid = row
+        id, name, total, date_time, _type, table_id, is_paid = row
         return (
             cls()
             .with_id(id)
+            .with_name(name)
             .with_total(total)
             .with_date_time(date_time)
             .with_type(_type)
@@ -78,6 +85,7 @@ class Bill(Modelable):
     def to_dict(self: Self) -> Dict:
         return {
             "id": self.id,
+            "name": self.name,
             "total": self.total,
             "date_time": self.date_time,
             "type": self.type,
@@ -100,8 +108,8 @@ class Bill(Modelable):
 
     def save(self: Self) -> None:
         Bill._db.execute(
-            "UPDATE Bills SET total = ?, date_time = ?, type = ?, table_id = ?, is_paid = ? WHERE id = ?",
-            [self.total, self.date_time, self.type, self.table_id, self.is_paid, self.id],
+            "UPDATE Bills SET name = ?, total = ?, date_time = ?, type = ?, table_id = ?, is_paid = ? WHERE id = ?",
+            [self.name, self.total, self.date_time, self.type, self.table_id, self.is_paid, self.id],
         )
         Bill._db.connection.commit()
 
@@ -109,7 +117,7 @@ class Bill(Modelable):
         if self.id != 0:
             raise Error("That record already exists!")
         cur = Bill._db.execute(
-            "INSERT INTO Bills (total, date_time, type, table_id) VALUES (?, ?, ?, ?)",
+            "INSERT INTO Bills (name, total, date_time, type, table_id) VALUES (?, ?, ?, ?, ?)",
             [self.total, self.date_time, self.type, self.table_id],
         )
         if cur.lastrowid:

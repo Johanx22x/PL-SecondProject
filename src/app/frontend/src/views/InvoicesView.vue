@@ -67,6 +67,7 @@
                                 <el-container class="d-flex flex-row">
                                     <el-container class="w-100">
                                         <el-descriptions 
+                                            :title="bill.name"
                                             class="w-100"
                                             :column="2"
                                             >

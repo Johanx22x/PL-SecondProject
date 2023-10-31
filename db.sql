@@ -21,6 +21,7 @@ CREATE TABLE Tables (
 -- Bills table with ON DELETE CASCADE
 CREATE TABLE Bills (
     id          INTEGER PRIMARY KEY AUTOINCREMENT,
+    name        TEXT    DEFAULT "Unnamed bill :^)",
     total       FLOAT   DEFAULT 0.0,
     date_time   DATETIME DEFAULT CURRENT_TIMESTAMP,
     type        INTEGER DEFAULT 1,
