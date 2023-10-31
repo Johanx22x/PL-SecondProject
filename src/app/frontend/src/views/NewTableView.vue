@@ -3,29 +3,15 @@
         <el-card class="mt-5 w-50 h-50">
             <template #header>
                 <el-text>
-                    <h3>Create New Food</h3>
+                    <h3>Create New Table</h3>
                 </el-text>
             </template>
             <el-form :model="form" ref="formRef" :rules="formRules" label-position="top">
                 <el-form-item label="Name" for="name" prop="name">
                     <el-input size="large" name="name" v-model="form.name" />
                 </el-form-item>
-                <div class="d-flex flex-row justify-content-between">
-                    <el-form-item label="Calories" for="calories" prop="calories">
-                        <el-input-number size="large" name="calories" v-model.number="form.calories" :min="0"/>
-                    </el-form-item>
-                    <el-form-item label="Price" for="price" prop="price">
-                        <el-input-number size="large" name="price" v-model.number="form.price" :min="0"/>
-                    </el-form-item>
-                </div>
-                <el-form-item label="Type" prop="type" for="type">
-                    <el-cascader
-                        size="large"
-                        name="type"
-                        :options="$store.state.foodTypes"
-                        :props="{ expandTrigger: 'hover' }"
-                        @change="(item) => {form.type = item[0]; form.subtype = item[1]}"
-                        class="w-100" />
+                <el-form-item label="Max People" for="people" prop="people">
+                    <el-input-number size="large" name="people" v-model="form.people" min="1" />
                 </el-form-item>
             </el-form>
             <div class="d-flex flex-row justify-content-around">
@@ -35,7 +21,7 @@
                     </template>
                     Submit
                 </el-button>
-                <el-button type="danger" class="text-decoration-none" size="large" tag="router-link" to='/inventory'>
+                <el-button type="danger" class="text-decoration-none" size="large" tag="router-link" to='/configuration'>
                     <template #icon>
                         <font-awesome-icon icon="fa-solid fa-xmark" size="xl" />
                     </template>
@@ -45,10 +31,9 @@
         </el-card>
     </el-container>
 </template>
-
 <script lang="ts">
     import { defineComponent } from "vue";
-    import Food from "@/food";
+    import Table from "@/table";
     import type { FormInstance } from "element-plus";
     import { ElNotification } from "element-plus";
     import axios from "axios";
@@ -64,8 +49,6 @@
                     }
                 });
             },
-            goBack() {
-            },
             async formWasValid() {
                 // @ts-ignore
                 let bodyFormData = new FormData();
@@ -73,14 +56,14 @@
                     // @ts-ignore
                     bodyFormData.append(key, value);
                 }
-                let result = await axios.post("/api/food/", bodyFormData);
+                let result = await axios.post("/api/table/", bodyFormData);
                 if (result.status === 200) {
                     ElNotification({
                         type: 'success',
                         title: 'Success!',
-                        message: 'Food created successfully!'
+                        message: 'Table was added successfully!'
                     });
-                    this.$router.push('/inventory');
+                    this.$router.push('/configuration');
                 }
             },
             formWasInvalid() {
@@ -95,28 +78,15 @@
         data() {
             return {
                 form: {
-                    name: "",
-                    calories: 0.0,
-                    price: 0.0,
-                    type: 0,
-                    subtype: 0
-                } as Food,
+                    name: '',
+                    people: 0,
+                } as Table,
                 formRules: {
                     name: [
                         { required: true, message: 'Please enter a name.' }
                     ],
-                    calories: [
-                        { required: true, message: 'Please enter some calories.' },
-                    ],
-                    price: [
-                        { required: true, message: 'Please enter a price.' },
-                    ],
-                    type: [
-                        {
-                            required: true,
-                            message: 'Please select the food\'s type',
-                            trigger: 'change'
-                        }
+                    people: [
+                        { required: true, message: 'Please enter a number of people.' }
                     ]
                 }
             };

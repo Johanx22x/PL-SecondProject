@@ -25,6 +25,7 @@ CREATE TABLE Bills (
     date_time   DATETIME DEFAULT CURRENT_TIMESTAMP,
     type        INTEGER DEFAULT 1,
     table_id    INTEGER,
+    is_paid     INTEGER DEFAULT 0,
     FOREIGN KEY (table_id) REFERENCES Tables(id) ON DELETE CASCADE
 );
 
@@ -32,7 +33,6 @@ CREATE TABLE Bills (
 CREATE TABLE Orders (
     id          INTEGER PRIMARY KEY AUTOINCREMENT,
     bill_id     INTEGER,
-    is_healthy  INTEGER DEFAULT 0,
     FOREIGN KEY (bill_id) REFERENCES Bills(id) ON DELETE CASCADE
 );
 
@@ -56,6 +56,7 @@ CREATE TABLE Dishes_Foods (
 CREATE TABLE Dishes_Orders (
     dish_id INTEGER,
     order_id INTEGER,
+    is_healthy  INTEGER DEFAULT 0,
     FOREIGN KEY (dish_id) REFERENCES Dishes(id) ON DELETE CASCADE,
     FOREIGN KEY (order_id) REFERENCES Orders(id) ON DELETE CASCADE
 );

@@ -76,6 +76,9 @@ class Table(Modelable):
             "UPDATE Tables SET name = ?, people = ? WHERE id = ?", [self.name, self.people, self.id]
         )
 
+    def delete(self: Self) -> None:
+        Table._db.execute("DELETE FROM Tables WHERE id = ?", [self.id])
+
     @property
     def bills(self: Self) -> List[Bill]:
         cur = Table._db.execute("SELECT * FROM Bills WHERE table_id = ?", [self.id])

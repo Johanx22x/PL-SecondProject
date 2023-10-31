@@ -12,6 +12,7 @@ class BillForm(TypedDict):
     date_time: datetime
     type: int
     table_id: int
+    is_paid: bool
 
 
 class Bill(Modelable):
@@ -24,6 +25,7 @@ class Bill(Modelable):
         self.date_time: datetime = datetime.now()
         self.type = 0
         self.table_id = 0
+        self.is_paid = False
 
     def with_id(self: Self, id: int) -> Self:
         self.id = int(id)
@@ -45,9 +47,13 @@ class Bill(Modelable):
         self.table_id = int(table_id)
         return self
 
+    def with_is_paid(self: Self, is_paid: bool) -> Self:
+        self.is_paid = is_paid
+        return self
+
     @classmethod
     def from_row(cls, row: List[Any]) -> Self:
-        id, total, date_time, _type, table_id = row
+        id, total, date_time, _type, table_id, is_paid = row
         return (
             cls()
             .with_id(id)
@@ -55,6 +61,7 @@ class Bill(Modelable):
             .with_date_time(date_time)
             .with_type(_type)
             .with_table_id(table_id)
+            .with_is_paid(is_paid)
         )
 
     @classmethod
@@ -75,6 +82,7 @@ class Bill(Modelable):
             "date_time": self.date_time,
             "type": self.type,
             "table_id": self.table_id,
+            "is_paid": bool(self.is_paid),
         }
 
     @classmethod
@@ -92,8 +100,8 @@ class Bill(Modelable):
 
     def save(self: Self) -> None:
         Bill._db.execute(
-            "UPDATE Bills SET total = ?, date_time = ?, type = ?, table_id = ? WHERE id = ?",
-            [self.total, self.date_time, self.type, self.table_id, self.id],
+            "UPDATE Bills SET total = ?, date_time = ?, type = ?, table_id = ?, is_paid = ? WHERE id = ?",
+            [self.total, self.date_time, self.type, self.table_id, self.is_paid, self.id],
         )
         Bill._db.connection.commit()
 
