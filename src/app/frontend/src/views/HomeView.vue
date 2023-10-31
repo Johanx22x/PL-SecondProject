@@ -4,7 +4,12 @@
       <h1>Welcome to MonchaTEC administration system!</h1>
       <h5>Here you can manage and control the restaurant</h5>
     </el-text>
-    <el-button type="primary" size="large" class="mt-2">Make an order</el-button>
+    <el-button type="primary" size="large" class="mt-2" tag="router-link" to="/orders/add" style="text-decoration: none;">
+      <template #icon>
+        <font-awesome-icon icon="fa-solid fa-utensils" size="xl" />
+      </template>
+      Make an order
+    </el-button>
   </el-container>
 </template>
 
