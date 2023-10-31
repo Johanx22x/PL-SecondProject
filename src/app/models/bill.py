@@ -116,6 +116,14 @@ class Bill(Modelable):
             self.id = cur.lastrowid
         Bill._db.connection.commit()
 
+    def delete(self: Self) -> None:
+        Bill._db.execute("DELETE FROM Bills WHERE id = ?", [self.id])
+        Bill._db.connection.commit()
+
+    def pay(self: Self) -> None:
+        Bill._db.execute("UPDATE Bills SET is_paid = ? WHERE id = ?", [1, self.id])
+        Bill._db.connection.commit()
+
     @property
     def orders(self: Self) -> List[Order]:
         cur = Bill._db.execute("SELECT * FROM Orders WHERE bill_id = ?", [self.id])

@@ -7,7 +7,6 @@
         <div class="d-flex flex-row justify-content-between w-100">
             <div class="w-100 mb-3 mt-3 d-flex">
                 <el-input size="large" type="text" class="h-100 w-25 me-3" placeholder="Name" v-model="dishName" />
-                    <!-- <el-checkbox size="large" label="Predefined" v-model="predefined"></el-checkbox> -->
             </div>
             <div class="mt-3 mb-3 d-flex h-100">
                 <el-button type="primary" class="h-100 text-decoration-none" size="large" tag="router-link" to='/dishes/add'>
@@ -52,8 +51,9 @@
                                         class="w-100"
                                         :column="2"
                                         >
-                                        <el-descriptions-item label="Predefined?" :width="200">{{ dish.predef ? 'Yes' : 'No' }}</el-descriptions-item>
-                                        <el-descriptions-item label="Food count" :width="200">{{ dish.foods.length }}</el-descriptions-item>
+                                        <el-descriptions-item label="Food amount:" :width="200">{{ dish.foods.length }}</el-descriptions-item>
+                                        <el-descriptions-item label="Price:" :width="200">${{ dish.foods.reduce((acc, food) => acc + food.price, 0).toFixed(2) }}</el-descriptions-item>
+                                        <el-descriptions-item label="Calories:" :width="200">{{ dish.foods.reduce((acc, food) => acc + food.calories, 0) }}</el-descriptions-item>
                                     </el-descriptions>
                                 </el-container>
                                 <el-container class="d-flex flex-column justify-content-center ms-3">

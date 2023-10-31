@@ -77,7 +77,7 @@
                                         </el-descriptions>
                                     </el-container>
                                     <el-container class="d-flex flex-column justify-content-center ms-3">
-                                        <el-button type="primary" class="text-decoration-none w-100 m-0" size="large" tag="router-link" :to="'/orders/bill/' + bill.id">
+                                        <el-button type="primary" class="text-decoration-none w-100 m-0" size="large" tag="router-link" :to="'/orders/view/' + bill.id">
                                             <template #icon>
                                                 <font-awesome-icon icon="fa-solid fa-eye" />
                                             </template>
@@ -168,7 +168,6 @@
         async mounted() {
             let bills = await this.fetchBills();
             this.billItems = bills.data;
-            console.log(this.billItems);
 
             this.billItems.forEach(async (bill) => {
                 try {

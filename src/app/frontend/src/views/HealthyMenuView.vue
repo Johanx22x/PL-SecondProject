@@ -66,11 +66,11 @@
                     </template>
                     Generate
                 </el-button>
-                <el-button type="danger" class="text-decoration-none" size="large" tag="router-link" to='/orders/add' style="text-decoration: none;">
+                <el-button type="primary" class="text-decoration-none" size="large" tag="router-link" to='/orders/menu' style="text-decoration: none;">
                     <template #icon>
-                        <font-awesome-icon icon="fa-solid fa-xmark" size="xl" />
+                        <font-awesome-icon icon="fa-solid fa-arrow-left" size="xl" />
                     </template>
-                    Cancel
+                    Go Back
                 </el-button>
             </div>
         </el-card>

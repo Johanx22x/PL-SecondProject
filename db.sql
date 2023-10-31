@@ -72,11 +72,10 @@ CREATE TABLE Statistics (
 );
 
 -- Trigger to update the Statistics table 
-CREATE TRIGGER update_statistics_bills
-AFTER INSERT ON Bills
+CREATE TRIGGER IF NOT EXISTS update_statistics_bills
+AFTER INSERT ON Bills 
 BEGIN
-    UPDATE Statistics SET total_sales = total_sales + new.total;
-    UPDATE Statistics SET total_orders = total_orders + 1;
+    UPDATE Statistics SET total_sales = total_sales + NEW.total, total_orders = total_orders + 1;
 END;
 
 CREATE TRIGGER update_statistics_foods

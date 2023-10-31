@@ -39,7 +39,7 @@ def create():
     return new_bill.to_dict()
 
 
-@bp.post("/<id>/update")
+@bp.put("/<id>")
 def update(id: int):
     casted_bill_form: BillForm = cast(BillForm, request.form)
     to_update = Bill.from_form(casted_bill_form).with_id(id)
@@ -48,3 +48,25 @@ def update(id: int):
     except Exception:
         abort(500)
     return to_update.to_dict()
+
+@bp.put("/<id>/pay")
+def pay(id: int):
+    bill = Bill.find(id)
+    if bill is None:
+        abort(404)
+    try:
+        bill.pay()
+    except Exception:
+        abort(500)
+    return bill.to_dict()
+
+@bp.delete("/<id>")
+def delete(id: int):
+    bill = Bill.find(id)
+    if bill is None:
+        abort(404)
+    try:
+        bill.delete()
+    except Exception:
+        abort(500)
+    return bill.to_dict()
