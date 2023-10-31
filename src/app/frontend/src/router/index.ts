@@ -36,6 +36,41 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import(/* webpackChunkName: "inventory" */"../views/InvoicesView.vue")
     },
     {
+        path: '/orders',
+        name: 'Orders',
+        component: () => import(/* webpackChunkName: "inventory" */"../views/OrdersView.vue")
+    },
+    {
+        path: '/orders/add',
+        name: 'Add Order',
+        component: () => import(/* webpackChunkName: "inventory" */"../views/NewOrderView.vue")
+    },
+    {
+        path: '/orders/menu',
+        name: 'Menu',
+        component: () => import(/* webpackChunkName: "inventory" */"../views/MenuView.vue")
+    },
+    {
+        path: '/orders/menu/traditional',
+        name: 'Traditional Menu',
+        component: () => import(/* webpackChunkName: "inventory" */"../views/TraditionalMenuView.vue")
+    },
+    {
+        path: '/orders/menu/healthy',
+        name: 'Healthy Menu',
+        component: () => import(/* webpackChunkName: "inventory" */"../views/HealthyMenuView.vue")
+    },
+    {
+        path: '/configuration/table/add',
+        name: 'Add Table',
+        component: () => import(/* webpackChunkName: "inventory" */"../views/NewTableView.vue")
+    },
+    {
+        path: '/configuration',
+        name: 'Configuration',
+        component: () => import(/* webpackChunkName: "inventory" */"../views/ConfigurationView.vue")
+    },
+    {
         path: '/statistics',
         name: 'Statistics',
         component: () => import(/* webpackChunkName: "inventory" */"../views/StatisticsView.vue")
