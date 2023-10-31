@@ -19,27 +19,27 @@ def find(id: int):
 
 @bp.post("/")
 def create():
-    casted_food_form: FoodForm = cast(FoodForm, request.form)
+    casted_food_form: FoodForm = cast(FoodForm, request.json)
     new_food = Food.from_form(casted_food_form)
     try:
         new_food.store()
     except Exception:
-        abort(501)
+        abort(500)
     return new_food.to_dict()
 
 
-@bp.post("/<id>/update")
+@bp.post("/<id>")
 def update(id: int):
-    casted_food_form: FoodForm = cast(FoodForm, request.form)
+    casted_food_form: FoodForm = cast(FoodForm, request.json)
     to_update = Food.from_form(casted_food_form).with_id(id)
     try:
         to_update.save()
     except Exception:
-        abort(501)
+        abort(500)
     return to_update.to_dict()
 
 # Delete food 
-@bp.delete("/<id>/delete")
+@bp.delete("/<id>")
 def delete(id: int):
     food = Food.find(id)
     if food is None:
@@ -47,5 +47,5 @@ def delete(id: int):
     try:
         food.delete()
     except Exception:
-        return abort(501)
+        return abort(500)
     return food.to_dict()

@@ -24,7 +24,7 @@ def create():
     try:
         new_order.store()
     except Exception:
-        abort(501)
+        abort(500)
 
     return new_order.to_dict()
 
@@ -36,5 +36,5 @@ def update(id: int):
     try:
         to_update.save()
     except Exception:
-        abort(501)
+        abort(500)
     return to_update.to_dict()
