@@ -32,8 +32,8 @@ class Order(Modelable):
 
     @classmethod
     def from_row(cls, row: List[Any]) -> Self:
-        id, bill_id, is_healthy = row
-        return cls().with_id(id).with_bill_id(bill_id).with_is_healthy(is_healthy)
+        id, bill_id = row
+        return cls().with_id(id).with_bill_id(bill_id)
 
     @classmethod
     def from_rows(cls, rows: List[List[Any]]) -> List[Self]:
@@ -69,7 +69,7 @@ class Order(Modelable):
         Order._db.execute("UPDATE Orders SET bill_id = ? WHERE id = ?", [self.bill_id, self.id])
 
     def to_dict(self: Self) -> Dict:
-        return {"id": self.id, "bill_id": self.bill_id, "is_healthy": self.is_healthy}
+        return {"id": self.id, "bill_id": self.bill_id}
 
     @property
     def dishes(self: Self) -> List[Dish]:

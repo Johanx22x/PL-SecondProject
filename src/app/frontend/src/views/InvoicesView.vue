@@ -168,6 +168,7 @@
         async mounted() {
             let bills = await this.fetchBills();
             this.billItems = bills.data;
+            console.log(this.billItems);
 
             this.billItems.forEach(async (bill) => {
                 try {
