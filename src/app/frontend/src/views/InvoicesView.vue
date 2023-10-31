@@ -96,7 +96,6 @@
 
 <script lang="ts">
     import { defineComponent } from "vue";
-    import DescripionSkeleton from "@/components/DescriptionSkeleton.vue";
     import axios from "axios";
     import Bill from "@/bill";
     import { ElNotification } from "element-plus";
@@ -126,9 +125,6 @@
     ]
 
     export default defineComponent({
-        components: {
-            DescripionSkeleton
-        },
         data() {
             return {
                 billItems: [] as Bill[],
