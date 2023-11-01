@@ -148,8 +148,6 @@
                 });
                 this.$router.push('/dishes');
             }
-
-
         }
     });
 </script>
