@@ -1,8 +1,8 @@
+from app.foods import bp
 from typing import cast
 
 from flask import abort, request
 
-from app.foods import bp
 from app.models.food import Food, FoodForm
 
 

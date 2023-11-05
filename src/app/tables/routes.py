@@ -1,9 +1,9 @@
+from app.tables import bp
 from typing import cast
 
 from flask import abort, request
 
 from app.models.table import Table, TableForm
-from app.tables import bp
 
 
 @bp.get("/")

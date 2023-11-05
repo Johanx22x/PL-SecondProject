@@ -1,8 +1,7 @@
 from flask import Blueprint
 
-from app.dishes import routes
-
 bp = Blueprint("dish", __name__, url_prefix="/dish")
 
+from app.dishes import routes
 
 __all__ = ["routes"]

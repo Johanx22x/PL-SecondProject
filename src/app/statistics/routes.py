@@ -1,7 +1,7 @@
+from app.statistics import bp
 from flask import abort, request
 
 from app.models.statistic import Statistic
-from app.statistics import bp
 
 
 @bp.route("/", methods=["GET"])

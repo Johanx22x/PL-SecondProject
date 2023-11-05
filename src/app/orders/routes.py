@@ -1,9 +1,9 @@
+from app.orders import bp
 from typing import cast
 
 from flask import abort, request
 
 from app.models.order import Order, OrderForm
-from app.orders import bp
 
 
 @bp.get("/")

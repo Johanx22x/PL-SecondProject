@@ -1,9 +1,10 @@
+from app.bills import bp
+from app.models.bill import Bill, BillForm
+from app.models.bill import Bill, BillForm
 from typing import cast
 
 from flask import abort, request
 
-from app.bills import bp
-from app.models.bill import Bill, BillForm
 
 
 @bp.get("/")
