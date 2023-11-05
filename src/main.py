@@ -1,6 +1,6 @@
 from app import Program
-from app.sqlite import SQLite
-from app.prolog import Prolog
+from app import Prolog
+from app import SQLite
 
 
 p = Program()

@@ -17,5 +17,5 @@ def img(filename: str):
 
 @bp.route('/', defaults={'path': ''})
 @bp.route("/<path:path>")
-def static_files(path):
+def static_files(_):
     return bp.send_static_file("index.html")

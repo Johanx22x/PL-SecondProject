@@ -1,6 +1,7 @@
-from sqlite3 import Error
-from typing import Any, Self, List, TypedDict, Optional, Dict
 from datetime import datetime
+from sqlite3 import Error
+from typing import Any, Dict, List, Optional, Self, TypedDict
+
 from app.models.model_protocol import Modelable
 from app.models.order import Order
 from app.sqlite import SQLite

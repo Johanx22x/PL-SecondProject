@@ -1,5 +1,7 @@
-from flask import abort, request
 from typing import cast
+
+from flask import abort, request
+
 from app.dishes import bp
 from app.models.dish import Dish, DishForm
 

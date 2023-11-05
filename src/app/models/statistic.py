@@ -1,5 +1,6 @@
-from typing import Self, List, Any, Dict, Optional
 from datetime import datetime
+from typing import Any, Dict, List, Optional, Self
+
 from app.models.model_protocol import Modelable
 from app.sqlite import SQLite
 
@@ -70,7 +71,7 @@ class Statistic(Modelable):
         return cls.from_row(row)
 
     @classmethod
-    def sales_and_income_by_date_range(cls, start_date: datetime, end_date: datetime) -> List[Self]:
+    def sales_and_income_by_date_range(cls, start_date: str, end_date: str) -> List[Self]:
         cur = cls._db.execute("SELECT DATE(b.date_time) AS order_date, SUM(orders_per_bill.total_orders) AS total_sales, SUM(b.total) AS total_income FROM Bills b JOIN ( SELECT bill_id, COUNT(*) AS total_orders FROM Orders GROUP BY bill_id) AS orders_per_bill ON b.id = orders_per_bill.bill_id WHERE DATE(b.date_time) BETWEEN ? AND ? GROUP BY order_date;", [start_date, end_date])
         return cur.fetchall()
 

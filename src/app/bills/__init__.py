@@ -1,7 +1,9 @@
 from flask import Blueprint
 
+from app.bills import routes
+
 bp = Blueprint("bills", __name__, url_prefix="/bill")
 
-from app.bills import routes
+
 
 __all__ = ["routes"]

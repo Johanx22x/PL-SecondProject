@@ -1,7 +1,9 @@
 from typing import cast
+
 from flask import abort, request
-from app.orders import bp
+
 from app.models.order import Order, OrderForm
+from app.orders import bp
 
 
 @bp.get("/")
@@ -19,7 +21,7 @@ def find(id: int):
 
 @bp.post("/")
 def create():
-    casted_order_form: OrderForm = cast(OrderForm, request.form)
+    casted_order_form: OrderForm = cast(OrderForm, request.json)
     new_order = Order.from_form(casted_order_form)
     try:
         new_order.store()
@@ -31,7 +33,7 @@ def create():
 
 @bp.post("/<id>/update")
 def update(id: int):
-    casted_order_form: OrderForm = cast(OrderForm, request.form)
+    casted_order_form: OrderForm = cast(OrderForm, request.json)
     to_update = Order.from_form(casted_order_form).with_id(id)
     try:
         to_update.save()

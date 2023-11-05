@@ -1,6 +1,7 @@
-from sqlite3 import Error
-from typing import Any, List, Self, TypedDict, Optional, Dict
 from enum import IntEnum, auto
+from sqlite3 import Error
+from typing import Any, Dict, List, Optional, Self, TypedDict
+
 from app.models.model_protocol import Modelable
 from app.sqlite import SQLite
 

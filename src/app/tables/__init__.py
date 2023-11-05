@@ -1,7 +1,9 @@
 from flask import Blueprint
 
+from app.tables import routes
+
 bp = Blueprint("table", __name__, url_prefix="/table")
 
-from app.tables import routes
+
 
 __all__ = ["routes"]

@@ -1,5 +1,6 @@
 from sqlite3 import Error
-from typing import Self, TypedDict, Optional, Any, List, Dict
+from typing import Any, Dict, List, Optional, Self, TypedDict
+
 from app.models.food import Food
 from app.models.model_protocol import Modelable
 from app.sqlite import SQLite

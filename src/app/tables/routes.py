@@ -1,7 +1,9 @@
 from typing import cast
+
 from flask import abort, request
-from app.tables import bp
+
 from app.models.table import Table, TableForm
+from app.tables import bp
 
 
 @bp.get("/")
@@ -19,7 +21,7 @@ def find(id: int):
 
 @bp.post("/")
 def create():
-    casted_table_form: TableForm = cast(TableForm, request.form)
+    casted_table_form: TableForm = cast(TableForm, request.json)
     new_table = Table.from_form(casted_table_form)
     try:
         new_table.store()
@@ -30,7 +32,7 @@ def create():
 
 @bp.post("/<id>/update")
 def update():
-    casted_table_form: TableForm = cast(TableForm, request.form)
+    casted_table_form: TableForm = cast(TableForm, request.json)
     to_update = Table.from_form(casted_table_form)
     try:
         to_update.save()

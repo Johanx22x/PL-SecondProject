@@ -1,4 +1,5 @@
-from typing import Optional, Self, List, Any, TypedDict, Dict
+from typing import Any, Dict, List, Optional, Self, TypedDict
+
 from app.models.dish import Dish
 from app.models.model_protocol import Modelable
 from app.sqlite import SQLite

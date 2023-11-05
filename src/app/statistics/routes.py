@@ -1,6 +1,5 @@
-from typing import cast
 from flask import abort, request
-from datetime import datetime
+
 from app.models.statistic import Statistic
 from app.statistics import bp
 
@@ -30,7 +29,7 @@ def sales_and_income_by_date_range():
     statistics = Statistic.sales_and_income_by_date_range(start, end)
     if statistics is None:
         abort(404)
-    # This have the format [["2020-01-01", 1, 1.0], ...]
+    # This has the format [["2020-01-01", 1, 1.0], ...]
     return statistics
 
 @bp.route("/top-menu-items", methods=["GET"])

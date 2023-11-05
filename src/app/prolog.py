@@ -1,5 +1,7 @@
-from typing import Self, Any, List
+from typing import Any, List, Self
+
 from swiplserver import PrologMQI
+
 from app.singleton import SingletonMeta
 
 

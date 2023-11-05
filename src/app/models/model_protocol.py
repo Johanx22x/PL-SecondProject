@@ -1,4 +1,4 @@
-from typing import Protocol, List, Any, Dict, Self
+from typing import Any, Dict, List, Protocol, Self
 
 
 class Modelable(Protocol):

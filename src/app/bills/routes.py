@@ -1,7 +1,9 @@
 from typing import cast
+
 from flask import abort, request
-from app.models.bill import Bill, BillForm
+
 from app.bills import bp
+from app.models.bill import Bill, BillForm
 
 
 @bp.get("/")
@@ -30,7 +32,7 @@ def get_orders(id: int):
 
 @bp.post("/")
 def create():
-    casted_bill_form: BillForm = cast(BillForm, request.form)
+    casted_bill_form: BillForm = cast(BillForm, request.json)
     new_bill = Bill.from_form(casted_bill_form)
     try:
         new_bill.store()
@@ -41,7 +43,7 @@ def create():
 
 @bp.put("/<id>")
 def update(id: int):
-    casted_bill_form: BillForm = cast(BillForm, request.form)
+    casted_bill_form: BillForm = cast(BillForm, request.json)
     to_update = Bill.from_form(casted_bill_form).with_id(id)
     try:
         to_update.save()
