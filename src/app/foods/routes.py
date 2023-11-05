@@ -5,6 +5,7 @@ from flask import abort, request
 from app.foods import bp
 from app.models.food import Food, FoodForm
 
+
 @bp.get("/")
 def all():
     return [food.to_dict() for food in Food.all()]
@@ -39,7 +40,8 @@ def update(id: int):
         abort(500)
     return to_update.to_dict()
 
-# Delete food 
+
+# Delete food
 @bp.delete("/<id>")
 def delete(id: int):
     food = Food.find(id)

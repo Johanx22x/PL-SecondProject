@@ -51,6 +51,7 @@ def update(id: int):
         abort(500)
     return to_update.to_dict()
 
+
 @bp.put("/<id>/pay")
 def pay(id: int):
     bill = Bill.find(id)
@@ -61,6 +62,7 @@ def pay(id: int):
     except Exception:
         abort(500)
     return bill.to_dict()
+
 
 @bp.delete("/<id>")
 def delete(id: int):

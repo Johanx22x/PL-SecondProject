@@ -40,6 +40,7 @@ def update():
         abort(500)
     return to_update.to_dict()
 
+
 @bp.delete("/<id>")
 def delete(id: int):
     table = Table.find(id)

@@ -110,7 +110,15 @@ class Bill(Modelable):
     def save(self: Self) -> None:
         Bill._db.execute(
             "UPDATE Bills SET name = ?, total = ?, date_time = ?, type = ?, table_id = ?, is_paid = ? WHERE id = ?",
-            [self.name, self.total, self.date_time, self.type, self.table_id, self.is_paid, self.id],
+            [
+                self.name,
+                self.total,
+                self.date_time,
+                self.type,
+                self.table_id,
+                self.is_paid,
+                self.id,
+            ],
         )
         Bill._db.connection.commit()
 
@@ -130,10 +138,14 @@ class Bill(Modelable):
         Bill._db.connection.commit()
 
     def pay(self: Self) -> None:
-        Bill._db.execute("UPDATE Bills SET is_paid = ? WHERE id = ?", [1, self.id])
+        Bill._db.execute(
+            "UPDATE Bills SET is_paid = ? WHERE id = ?", [1, self.id]
+        )
         Bill._db.connection.commit()
 
     @property
     def orders(self: Self) -> List[Order]:
-        cur = Bill._db.execute("SELECT * FROM Orders WHERE bill_id = ?", [self.id])
+        cur = Bill._db.execute(
+            "SELECT * FROM Orders WHERE bill_id = ?", [self.id]
+        )
         return Order.from_rows(cur.fetchall())

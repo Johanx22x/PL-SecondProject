@@ -66,7 +66,8 @@ class Table(Modelable):
         if self.id != 0:
             raise Error("That record already exists!")
         cur = Table._db.execute(
-            "INSERT INTO Tables (name, people) VALUES (?, ?)", [self.name, self.people]
+            "INSERT INTO Tables (name, people) VALUES (?, ?)",
+            [self.name, self.people],
         )
         if cur.lastrowid:
             self.id = cur.lastrowid
@@ -74,7 +75,8 @@ class Table(Modelable):
 
     def save(self: Self) -> None:
         Table._db.execute(
-            "UPDATE Tables SET name = ?, people = ? WHERE id = ?", [self.name, self.people, self.id]
+            "UPDATE Tables SET name = ?, people = ? WHERE id = ?",
+            [self.name, self.people, self.id],
         )
 
     def delete(self: Self) -> None:
@@ -82,5 +84,7 @@ class Table(Modelable):
 
     @property
     def bills(self: Self) -> List[Bill]:
-        cur = Table._db.execute("SELECT * FROM Bills WHERE table_id = ?", [self.id])
+        cur = Table._db.execute(
+            "SELECT * FROM Bills WHERE table_id = ?", [self.id]
+        )
         return Bill.from_rows(cur.fetchall())

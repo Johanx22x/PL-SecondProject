@@ -54,7 +54,9 @@ class Dish(Modelable):
     @classmethod
     def from_form(cls, form: DishForm) -> Self:
         res = cls()
-        for key, value in filter(lambda entry: entry[0] != "foods", form.items()):
+        for key, value in filter(
+            lambda entry: entry[0] != "foods", form.items()
+        ):
             setattr(res, key, value)
 
         if foods := form.get("foods"):
@@ -64,14 +66,21 @@ class Dish(Modelable):
 
     def save_food(self: Self, food_id: int):
         Food._db.execute(
-            "INSERT INTO Dishes_Foods (dish_id, food_id) VALUES (?, ?)", [self.id, food_id]
+            "INSERT INTO Dishes_Foods (dish_id, food_id) VALUES (?, ?)",
+            [self.id, food_id],
         )
         Food._db.connection.commit()
 
     @classmethod
     def from_row(cls, row: List[Any]) -> Self:
         id, name, _type, is_predef = row
-        return cls().with_id(id).with_name(name).with_type(_type).with_predef(is_predef)
+        return (
+            cls()
+            .with_id(id)
+            .with_name(name)
+            .with_type(_type)
+            .with_predef(is_predef)
+        )
 
     @classmethod
     def from_rows(cls, rows: List[List[Any]]) -> List[Self]:
@@ -102,31 +111,40 @@ class Dish(Modelable):
         if self.id != 0:
             raise Error("That record already exists!")
         cur = Dish._db.execute(
-            "INSERT INTO Dishes (name, type) VALUES (?, ?)", [self.name, self.type]
+            "INSERT INTO Dishes (name, type) VALUES (?, ?)",
+            [self.name, self.type],
         )
         if cur.lastrowid:
             self.id = cur.lastrowid
         Dish._db.connection.commit()
         for food in self._foods:
-            self.save_food(food['id'])
+            self.save_food(food["id"])
 
     def save(self: Self) -> None:
         Dish._db.execute(
-            "UPDATE Dishes SET name = ?, type = ? WHERE id = ?", [self.name, self.type, self.id]
+            "UPDATE Dishes SET name = ?, type = ? WHERE id = ?",
+            [self.name, self.type, self.id],
         )
 
-        cur = Dish._db.execute("SELECT food_id FROM Dishes_Foods WHERE dish_id = ?", [self.id])
+        cur = Dish._db.execute(
+            "SELECT food_id FROM Dishes_Foods WHERE dish_id = ?", [self.id]
+        )
 
-        foods = map(lambda f: f['id'], self._foods)
+        foods = map(lambda f: f["id"], self._foods)
         values = map(lambda v: v[0], cur.fetchall())
-        to_add = filter(lambda f: f not in values , foods)
+        to_add = filter(lambda f: f not in values, foods)
         to_delete = filter(lambda v: v not in foods, values)
 
         for food_id in to_delete:
-            Dish._db.execute("DELETE FROM Dishes_Foods WHERE food_id = ?", [food_id])
+            Dish._db.execute(
+                "DELETE FROM Dishes_Foods WHERE food_id = ?", [food_id]
+            )
 
         for food_id in to_add:
-            Dish._db.execute("INSERT INTO Dishes_Foods (dish_id, food_id) VALUES (?, ?)", [self.id, food_id])
+            Dish._db.execute(
+                "INSERT INTO Dishes_Foods (dish_id, food_id) VALUES (?, ?)",
+                [self.id, food_id],
+            )
 
         Dish._db.connection.commit()
 

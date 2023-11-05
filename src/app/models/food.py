@@ -14,19 +14,19 @@ class FoodType(IntEnum):
 
 
 class FoodSubType(IntEnum):
-    SODA = auto() # Drink
+    SODA = auto()  # Drink
     NATURAL = auto()
     WATER_BASED = auto()
     MILK_BASED = auto()
-    HOT = auto() # Drinks & Side Dishes
+    HOT = auto()  # Drinks & Side Dishes
     COLD = auto()
-    RED_MEAT = auto() # Proteins
+    RED_MEAT = auto()  # Proteins
     CHICKEN = auto()
     FISH = auto()
     SEAFOOD = auto()
-    VEGETABLES = auto() # Side Dishes
+    VEGETABLES = auto()  # Side Dishes
     CARBS = auto()
-    LACTOSE = auto() # Desserts
+    LACTOSE = auto()  # Desserts
     NO_LACTOSE = auto()
     FRUIT = auto()
 
@@ -70,7 +70,14 @@ class Food(Modelable):
     @property
     def values(self: Self, with_id=False) -> List:
         if with_id:
-            return [self.id, self.type, self.subtype, self.name, self.calories, self.price]
+            return [
+                self.id,
+                self.type,
+                self.subtype,
+                self.name,
+                self.calories,
+                self.price,
+            ]
         return [self.type, self.subtype, self.name, self.calories, self.price]
 
     def with_id(self: Self, id: int) -> Self:
@@ -151,12 +158,20 @@ class Food(Modelable):
     def save(self: Self) -> None:
         Food._db.execute(
             "UPDATE Foods SET type = ?, subtype = ?, name = ?, calories = ?, price = ? WHERE id = ?",
-            [self.type, self.subtype, self.name, self.calories, self.price, self.id],
+            [
+                self.type,
+                self.subtype,
+                self.name,
+                self.calories,
+                self.price,
+                self.id,
+            ],
         )
         Food._db.connection.commit()
 
     def delete(self: Self) -> None:
         Food._db.execute(
-            "DELETE FROM Foods WHERE id = ?", [self.id],
+            "DELETE FROM Foods WHERE id = ?",
+            [self.id],
         )
         Food._db.connection.commit()

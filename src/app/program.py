@@ -5,7 +5,9 @@ from flask_cors import CORS
 
 
 class Program:
-    def __init__(self: Self, server_name: str = __name__, static_folder="static") -> None:
+    def __init__(
+        self: Self, server_name: str = __name__, static_folder="static"
+    ) -> None:
         self._server = Flask(server_name, static_folder=static_folder)
 
     def run(self):
@@ -26,7 +28,9 @@ class Program:
         self._server.register_blueprint(bill_routes, url_prefix="/api/bill")
         self._server.register_blueprint(dish_routes, url_prefix="/api/dish")
         self._server.register_blueprint(food_routes, url_prefix="/api/food")
-        self._server.register_blueprint(statistic_routes, url_prefix="/api/statistic")
+        self._server.register_blueprint(
+            statistic_routes, url_prefix="/api/statistic"
+        )
         self._server.register_blueprint(order_routes, url_prefix="/api/order")
         self._server.register_blueprint(table_routes, url_prefix="/api/table")
         self._server.register_blueprint(static_routes)

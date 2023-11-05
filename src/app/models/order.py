@@ -61,13 +61,18 @@ class Order(Modelable):
         return cls.from_row(row)
 
     def store(self: Self) -> None:
-        cur = Order._db.execute("INSERT INTO Orders (bill_id) VALUES (?)", [self.bill_id])
+        cur = Order._db.execute(
+            "INSERT INTO Orders (bill_id) VALUES (?)", [self.bill_id]
+        )
         if cur.lastrowid:
             self.id = cur.lastrowid
         Order._db.connection.commit()
 
     def save(self: Self) -> None:
-        Order._db.execute("UPDATE Orders SET bill_id = ? WHERE id = ?", [self.bill_id, self.id])
+        Order._db.execute(
+            "UPDATE Orders SET bill_id = ? WHERE id = ?",
+            [self.bill_id, self.id],
+        )
 
     def to_dict(self: Self) -> Dict:
         return {"id": self.id, "bill_id": self.bill_id}
