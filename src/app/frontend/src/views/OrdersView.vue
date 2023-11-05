@@ -25,7 +25,7 @@
                                     <el-descriptions 
                                         class="w-100"
                                         :column="2"
-                                        :title="bill.id"
+                                        :title="bill.name"
                                         >
                                             <el-descriptions-item label="Number of orders:" :width="200">{{ bill.ordersAmount }}</el-descriptions-item>
                                             <el-descriptions-item label="Amount:" :width="200">${{ bill.total }}</el-descriptions-item>
@@ -38,7 +38,7 @@
                                         </template>
                                         Cancel
                                     </el-button>
-                                    <el-button type="primary" class="text-decoration-none w-100 m-0 mb-3" size="large">
+                                    <el-button type="primary" class="text-decoration-none w-100 m-0 mb-3" size="large" tag="router-link" :to="`/orders/edit/${bill.id}`">
                                         <template #icon>
                                             <font-awesome-icon icon="fa-solid fa-edit" size="xl" />
                                         </template>
@@ -68,7 +68,7 @@
                             <el-container class="d-flex flex-row">
                                 <el-container class="w-100">
                                     <el-descriptions 
-                                        :title="bill.id"
+                                        :title="bill.name"
                                         class="w-100"
                                         :column="1"
                                         >
@@ -170,7 +170,14 @@ export default defineComponent({
 
         active.forEach(async (bill) => {
             try {
-                bill.ordersAmount = await axios.get(`/api/bill/${bill.id}/orders`).then((res) => res.data.length);
+                bill.ordersAmount = await axios.get(`/api/bill/${bill.id}/orders`).then((res) => {
+                    let amount = 0;
+                    // @ts-ignore
+                    res.data.forEach((order) => {
+                        amount += order.dishes.length;
+                    });
+                    return amount;
+                });
             } catch (e: any) {
                 ElNotification({
                     type: 'error',
@@ -189,7 +196,14 @@ export default defineComponent({
 
         paid.forEach(async (bill) => {
             try {
-                bill.ordersAmount = await axios.get(`/api/bill/${bill.id}/orders`).then((res) => res.data.length);
+                bill.ordersAmount = await axios.get(`/api/bill/${bill.id}/orders`).then((res) => {
+                    let amount = 0;
+                    // @ts-ignore
+                    res.data.forEach((order) => {
+                        amount += order.dishes.length;
+                    });
+                    return amount;
+                });
             } catch (e: any) {
                 ElNotification({
                     type: 'error',

@@ -46,8 +46,7 @@
                                         </template>
                                         View Foods
                                     </el-button>
-                                    <!-- TODO: Add to order -->
-                                    <el-button type="success" class="text-decoration-none w-100 mt-3 m-0" size="large">
+                                    <el-button type="success" class="text-decoration-none w-100 mt-3 m-0" size="large" @click="addOrder(dish)">
                                         <template #icon>
                                             <font-awesome-icon icon="fa-solid fa-plus" />
                                         </template>
@@ -74,6 +73,7 @@
     import { defineComponent } from "vue";
     import Dish from "@/dish";
     import axios from "axios";
+    import { ElNotification } from "element-plus";
 
     export default defineComponent({
         data() {
@@ -85,6 +85,40 @@
         methods: {
             async fetchDishes() {
                 return await axios.get<Dish[]>("/api/dish");
+            },
+
+            addOrder(dish: Dish) {
+                // @ts-ignore
+                let orders = this.$store.getters.getOrders;
+
+                // If order already in orders, increment quantity 
+                // @ts-ignore
+                let order = orders.find((order) => order.name === dish.name);
+                if (order) {
+                    order.quantity++;
+                    // @ts-ignore
+                    this.$store.commit("setOrders", orders);
+                    ElNotification({
+                        title: "Success",
+                        message: "Added to order",
+                        type: "success",
+                    });
+                    return;
+                } else {
+                    // @ts-ignore
+                    this.$store.commit("setOrders", orders.concat({
+                        id: dish.id,
+                        name: dish.name,
+                        price: dish.foods.reduce((acc, food) => acc + food.price, 0),
+                        quantity: 1,
+                    }));
+                }
+
+                ElNotification({
+                    title: "Success",
+                    message: "Added to order",
+                    type: "success",
+                });
             },
         },
         mounted() {

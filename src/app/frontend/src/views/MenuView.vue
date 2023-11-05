@@ -26,11 +26,11 @@
             </router-link>
         </el-container>
         <el-container class="d-flex flex-row justify-content-around">
-            <el-button type="danger" size="large" class="mt-2" tag="router-link" to="/orders/add" style="text-decoration: none;">
+            <el-button type="primary" size="large" class="mt-2" tag="router-link" to="/orders/add" style="text-decoration: none;">
                 <template #icon>
-                    <font-awesome-icon icon="fa-solid fa-xmark" size="xl" />
+                    <font-awesome-icon icon="fa-solid fa-arrow-left" />
                 </template>
-                Cancel
+                Go Back
             </el-button>
         </el-container>
     </el-container>

@@ -16,7 +16,7 @@
                         <el-option
                             v-for="drink in drinks"
                             :key="drink.id"
-                            :label="drink.name"
+                            :label="drink.label"
                             :value="drink.id"
                         />
                     </el-select>
@@ -95,13 +95,7 @@
                 });
             },
             async formWasValid() {
-                // @ts-ignore
-                let bodyFormData = new FormData();
-                for (const [key, value] of Object.entries(this.form)) {
-                    // @ts-ignore
-                    bodyFormData.append(key, value);
-                }
-                let result = await axios.post("/api/food/", bodyFormData);
+                let result = await axios.post("/api/dish/", this.form);
                 if (result.status === 200) {
                     ElNotification({
                         type: 'success',
@@ -116,11 +110,14 @@
                     title: 'Error!',
                     message: 'One or more fields are invalid!'
                 });
-            }
-
+            },
         },
         data() {
             return {
+                drinks: [],
+                proteins: [],
+                sideDishes: [],
+                desserts: [],
                 form: {
                     maxCalories: null,
                     wantDrink: null,
@@ -142,6 +139,10 @@
                     ],
                 }
             };
+        },
+        mounted() {
+            // @ts-ignore
+            this.drinks = this.$store.getters.getDrinks;
         },
     });
 </script>

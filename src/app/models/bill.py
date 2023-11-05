@@ -127,7 +127,7 @@ class Bill(Modelable):
             raise Error("That record already exists!")
         cur = Bill._db.execute(
             "INSERT INTO Bills (name, total, date_time, type, table_id) VALUES (?, ?, ?, ?, ?)",
-            [self.total, self.date_time, self.type, self.table_id],
+            [self.name, self.total, self.date_time, self.type, self.table_id],
         )
         if cur.lastrowid:
             self.id = cur.lastrowid

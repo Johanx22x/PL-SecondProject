@@ -25,8 +25,8 @@ def create():
     new_order = Order.from_form(casted_order_form)
     try:
         new_order.store()
-    except Exception:
-        abort(500)
+    except Exception as e:
+        abort(500, str(e))
 
     return new_order.to_dict()
 

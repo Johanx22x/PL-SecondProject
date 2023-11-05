@@ -161,7 +161,8 @@
                         // @ts-ignore
                         (((date1 === null) && (date2 === null)) || ((date >= date1) && date <= date2)) &&
                         (this.startPriceValue === null || bill.total >= this.startPriceValue) &&
-                        (this.endPriceValue === null || bill.total <= this.endPriceValue)
+                        (this.endPriceValue === null || bill.total <= this.endPriceValue) &&
+                        (bill.is_paid)
                     )
                 });
             },
@@ -172,7 +173,14 @@
 
             this.billItems.forEach(async (bill) => {
                 try {
-                    bill.ordersAmount = await axios.get(`/api/bill/${bill.id}/orders`).then((res) => res.data.length);
+                    bill.ordersAmount = await axios.get(`/api/bill/${bill.id}/orders`).then((res) => {
+                        let amount = 0;
+                        // @ts-ignore
+                        res.data.forEach((order) => {
+                            amount += order.dishes.length;
+                        });
+                        return amount;
+                    });
                 } catch (e: any) {
                     ElNotification({
                         type: 'error',

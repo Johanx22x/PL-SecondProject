@@ -41,6 +41,11 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import(/* webpackChunkName: "inventory" */"../views/OrdersView.vue")
     },
     {
+        path: '/orders/view/:id',
+        name: 'View Order',
+        component: () => import(/* webpackChunkName: "inventory" */"../views/ViewOrderView.vue")
+    },
+    {
         path: '/orders/add',
         name: 'Add Order',
         component: () => import(/* webpackChunkName: "inventory" */"../views/NewOrderView.vue")
@@ -89,6 +94,12 @@ const routes: Array<RouteRecordRaw> = [
         path: '/dishes/edit/:id',
         name: 'Edit Dish',
         component: () => import(/* webpackChunkName: "new_dish"*/ "@/views/EditDishView.vue"),
+        props: true
+    },
+    {
+        path: '/dishes/view/:id',
+        name: 'View Dish',
+        component: () => import(/* webpackChunkName: "new_dish"*/ "@/views/ViewDishView.vue"),
         props: true
     },
     {

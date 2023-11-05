@@ -2,6 +2,12 @@ import { createStore } from 'vuex'
 
 export default createStore({
     state: {
+        order: {
+            name: "",
+            table: null,
+            type: null,
+            orders: [],
+        },
         foodTypes: [
             {
                 label: "Drink",
@@ -108,8 +114,55 @@ export default createStore({
         ],
     },
     getters: {
+        getOrder(state) {
+            return state.order;
+        },
+        getName(state) {
+            return state.order.name;
+        },
+        getTable(state) {
+            return state.order.table;
+        },
+        getType(state) {
+            return state.order.type;
+        },
+        getOrders(state) {
+            return state.order.orders;
+        },
+        getDrinks(state) {
+            return state.foodTypes[0].children;
+        },
+        getProteins(state) {
+            return state.foodTypes[1].children;
+        },
+        getSideDishes(state) {
+            return state.foodTypes[2].children;
+        },
+        getDesserts(state) {
+            return state.foodTypes[3].children;
+        }
     },
     mutations: {
+        setName(state, name) {
+            state.order.name = name;
+        },
+        setTable(state, table) {
+            state.order.table = table;
+        },
+        setType(state, type) {
+            state.order.type = type;
+        },
+        setOrders(state, orders) {
+            state.order.orders = orders;
+        },
+        clearOrder(state) {
+            state.order = {
+                name: "",
+                table: null,
+                type: null,
+                orders: [],
+            }
+        },
     },
     actions: {
     },

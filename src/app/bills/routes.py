@@ -37,8 +37,8 @@ def create():
     new_bill = Bill.from_form(casted_bill_form)
     try:
         new_bill.store()
-    except Exception:
-        abort(500)
+    except Exception as e:
+        abort(500, str(e))
     return new_bill.to_dict()
 
 

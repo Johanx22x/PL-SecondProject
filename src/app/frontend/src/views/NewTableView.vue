@@ -50,13 +50,7 @@
                 });
             },
             async formWasValid() {
-                // @ts-ignore
-                let bodyFormData = new FormData();
-                for (const [key, value] of Object.entries(this.form)) {
-                    // @ts-ignore
-                    bodyFormData.append(key, value);
-                }
-                let result = await axios.post("/api/table/", bodyFormData);
+                let result = await axios.post("/api/table/", this.form);
                 if (result.status === 200) {
                     ElNotification({
                         type: 'success',
