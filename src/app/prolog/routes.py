@@ -1,5 +1,5 @@
 from app.prolog import bp
-from flask import abort, request
+from flask import abort
 from app.prolog import Prolog
 
 @bp.post("/<string:query>")

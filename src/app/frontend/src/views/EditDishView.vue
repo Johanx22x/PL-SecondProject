@@ -106,7 +106,9 @@
                 (this.$refs["formRef"] as FormInstance).validate(async (valid, _) => {
                     if (valid) {
                         try {
-                            await axios.post(`/api/dish/${this.id}`, this.form)
+                            console.dir(this.form);
+                            console.log(this.id);
+                            await axios.post(`/api/dish/${this.id}`, this.form);
                             ElNotification({
                                 type: 'success',
                                 title: "Successfully updated dish",

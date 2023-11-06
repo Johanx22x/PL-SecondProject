@@ -54,9 +54,7 @@ class Dish(Modelable):
     @classmethod
     def from_form(cls, form: DishForm) -> Self:
         res = cls()
-        for key, value in filter(
-            lambda entry: entry[0] != "foods", form.items()
-        ):
+        for key, value in filter(lambda entry: entry[0] != "foods", form.items()):
             setattr(res, key, value)
 
         if foods := form.get("foods"):
@@ -74,13 +72,7 @@ class Dish(Modelable):
     @classmethod
     def from_row(cls, row: List[Any]) -> Self:
         id, name, _type, is_predef = row
-        return (
-            cls()
-            .with_id(id)
-            .with_name(name)
-            .with_type(_type)
-            .with_predef(is_predef)
-        )
+        return cls().with_id(id).with_name(name).with_type(_type).with_predef(is_predef)
 
     @classmethod
     def from_rows(cls, rows: List[List[Any]]) -> List[Self]:
@@ -129,18 +121,21 @@ class Dish(Modelable):
         cur = Dish._db.execute(
             "SELECT food_id FROM Dishes_Foods WHERE dish_id = ?", [self.id]
         )
+        print(self._foods)
+        print(self.id)
 
-        foods = map(lambda f: f["id"], self._foods)
-        values = map(lambda v: v[0], cur.fetchall())
-        to_add = filter(lambda f: f not in values, foods)
-        to_delete = filter(lambda v: v not in foods, values)
+        foods = [f["id"] for f in self._foods]
+        values = [v[0] for v in cur.fetchall()]
+        to_add = [f for f in foods if f not in values]
+        to_delete = [v for v in values if v not in foods]
+
 
         for food_id in to_delete:
-            Dish._db.execute(
-                "DELETE FROM Dishes_Foods WHERE food_id = ?", [food_id]
-            )
+            print("deleting", food_id)
+            Dish._db.execute("DELETE FROM Dishes_Foods WHERE food_id = ?", [food_id])
 
         for food_id in to_add:
+            print("adding", food_id)
             Dish._db.execute(
                 "INSERT INTO Dishes_Foods (dish_id, food_id) VALUES (?, ?)",
                 [self.id, food_id],

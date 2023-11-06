@@ -1,6 +1,7 @@
 from enum import IntEnum, auto
 from sqlite3 import Error
 from typing import Any, Dict, List, Optional, Self, TypedDict
+from app.prolog import Prolog
 
 from app.models.model_protocol import Modelable
 from app.sqlite import SQLite

@@ -95,7 +95,6 @@
         computed: {
             filteredItems(): Dish[] {
                 this.dishes;
-                console.log(this.dishes);
                 return this.dishes.filter((dish: Dish) => dish.name.toLowerCase().includes(this.dishName.toLowerCase()));
             }
         },

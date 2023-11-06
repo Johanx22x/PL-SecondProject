@@ -16,6 +16,10 @@ def js(filename: str):
 def img(filename: str):
     return bp.send_static_file(f"static/img/{filename}")
 
+@bp.route("/static/css/<filename>")
+def css(filename: str):
+    return bp.send_static_file(f"static/css/{filename}")
+
 
 @bp.route("/", defaults={"path": ""})
 

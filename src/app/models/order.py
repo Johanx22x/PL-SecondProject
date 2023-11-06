@@ -1,3 +1,4 @@
+from sqlite3 import Error
 from typing import Any, Dict, List, Optional, Self, TypedDict
 
 from app.models.dish import Dish
