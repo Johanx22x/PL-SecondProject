@@ -163,6 +163,32 @@ nombre.
 
 \subsubsection{Órdenes}
 
+Para el tema de las órdenes, se decidió implementar una vista que permita 
+agregar y eliminar órdenes, para esto, se creó un formulario que permite 
+agregar una orden, el cual contiene los siguientes campos: nombre de la orden, 
+mesa, tipo de orden y las comidas que se desean ordenar, ver figura \ref{fig:orders_add},
+además, se creó una vista que permite visualizar todas las órdenes 
+activas y pagadas, en esta vista se puede eliminar una orden, además de 
+que se puede acceder a la vista de agregar una orden, ver figura 
+\ref{fig:orders}. A la hora de hacer ordenes existe la opción de ordenar del 
+menú predefinido o del menú saludable, el cual hace uso de Prolog para 
+generar platos saludables a partir de los productos existentes en el 
+inventario y las restricciones establecidas por el cliente.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{assets/orders_add.png}
+    \caption{Vista de agregar una orden}
+    \label{fig:orders_add}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{assets/orders.png}
+    \caption{Vista de Órdenes}
+    \label{fig:orders}
+\end{figure}
+
 \subsubsection{Estadísticas}
 
 En esta vista se logra visualizar información significativa para el 
