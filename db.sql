@@ -177,9 +177,9 @@ INSERT INTO Tables (name, people) VALUES ('Table 3', 3);
 INSERT INTO Tables (name, people) VALUES ('Table 4', 2);
 
 -- Inserting bills into the Bills table 
-INSERT INTO Bills (total, date_time, type, table_id) VALUES (32.5, '2017-01-01 12:53:00', 1, 1);
-INSERT INTO Bills (total, date_time, type, table_id) VALUES (12.1, '2017-01-01 13:04:00', 2, 2);
-INSERT INTO Bills (total, date_time, type, table_id) VALUES (18.0, '2017-01-04 15:23:00', 1, 3);
+INSERT INTO Bills (total, date_time, type, table_id) VALUES (32.5, '2023-11-02 12:53:00', 1, 1);
+INSERT INTO Bills (total, date_time, type, table_id) VALUES (12.1, '2023-11-03 13:04:00', 2, 2);
+INSERT INTO Bills (total, date_time, type, table_id) VALUES (18.0, '2023-11-04 15:23:00', 1, 3);
 
 INSERT INTO Orders (bill_id) VALUES (1);
 INSERT INTO Orders (bill_id) VALUES (1);

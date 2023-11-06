@@ -23,6 +23,7 @@ class Program:
         from app.orders import bp as order_routes
         from app.statistics import bp as statistic_routes
         from app.tables import bp as table_routes
+        from app.prolog import bp as prolog_routes
         from app.static_serve import bp as static_routes
 
         self._server.register_blueprint(bill_routes, url_prefix="/api/bill")
@@ -33,6 +34,7 @@ class Program:
         )
         self._server.register_blueprint(order_routes, url_prefix="/api/order")
         self._server.register_blueprint(table_routes, url_prefix="/api/table")
+        self._server.register_blueprint(prolog_routes, url_prefix="/api/prolog")
         self._server.register_blueprint(static_routes)
 
     def _serve(self: Self) -> None:

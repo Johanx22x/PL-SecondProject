@@ -155,6 +155,12 @@ class Food(Modelable):
             self.id = cur.lastrowid
         Food._db.connection.commit()
 
+        try:
+            prolog = Prolog()
+            prolog.query(f"assertz(food({self.type}, {self.subtype}, '{self.name}', {self.calories}, {self.price})).")
+        except Exception as e:
+            print(e)
+
     def save(self: Self) -> None:
         Food._db.execute(
             "UPDATE Foods SET type = ?, subtype = ?, name = ?, calories = ?, price = ? WHERE id = ?",
@@ -175,3 +181,9 @@ class Food(Modelable):
             [self.id],
         )
         Food._db.connection.commit()
+
+        try:
+            prolog = Prolog()
+            prolog.query(f"retract(food({self.type}, {self.subtype}, '{self.name}', {self.calories}, {self.price})).")
+        except Exception as e:
+            print(e)

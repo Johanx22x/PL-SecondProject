@@ -108,7 +108,7 @@ class Statistic(Modelable):
     @classmethod
     def top_inventory_items(cls) -> List[Self]:
         cur = cls._db.execute(
-            "SELECT f.name AS name, COUNT(fo.food_id) AS amount FROM Foods f JOIN Dishes_Foods fo ON fo.food_id = f.id JOIN Dishes d ON d.id = fo.dish_id JOIN Dishes_Orders do ON do.dish_id = d.id JOIN Orders o ON o.id = do.order_id WHERE do.is_healthy = 1 AND d.is_predef = 0 GROUP BY f.name ORDER BY amount DESC LIMIT 3;"
+            "SELECT f.name AS name, COUNT(fo.food_id) AS amount FROM Foods f JOIN Dishes_Foods fo ON fo.food_id = f.id JOIN Dishes d ON d.id = fo.dish_id JOIN Dishes_Orders do ON do.dish_id = d.id JOIN Orders o ON o.id = do.order_id WHERE d.is_predef = 0 GROUP BY f.name ORDER BY amount DESC LIMIT 3;"
         )
         return cur.fetchall()
 

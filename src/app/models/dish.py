@@ -111,8 +111,8 @@ class Dish(Modelable):
         if self.id != 0:
             raise Error("That record already exists!")
         cur = Dish._db.execute(
-            "INSERT INTO Dishes (name, type) VALUES (?, ?)",
-            [self.name, self.type],
+            "INSERT INTO Dishes (name, is_predef) VALUES (?, ?)",
+            [self.name, self.is_predef],
         )
         if cur.lastrowid:
             self.id = cur.lastrowid

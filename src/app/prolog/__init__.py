@@ -1,7 +1,6 @@
+from flask import Blueprint
 from typing import Any, List, Self
-
 from swiplserver import PrologMQI
-
 from app.singleton import SingletonMeta
 
 
@@ -40,28 +39,8 @@ class Prolog(metaclass=SingletonMeta):
         del SingletonMeta._instances[self.__class__]
 
 
-if __name__ == "__main__":
-    # Initialize
-    prolog = Prolog()
+bp = Blueprint("prolog", __name__, url_prefix="/prolog")
 
-    # Consult
-    result = prolog.query("consult('./main.pl')")
-    print(result)
+from app.prolog import routes
 
-    # Query
-    result = prolog.query("parent(X, Y).")
-    print(result)
-
-    # Singleton test
-    prolog = Prolog()
-    result = prolog.query("parent(X, Y).")
-    print(result)
-
-    # Close or reset deletes the knowledge base
-    prolog.reset()
-    prolog.close()
-
-    # When close() is called, the singleton instance is deleted
-    prolog2 = Prolog()
-    print(prolog is prolog2)
-    prolog2.close()
+__all__ = ["routes"]

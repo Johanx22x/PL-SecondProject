@@ -38,12 +38,7 @@
                                         </template>
                                         Cancel
                                     </el-button>
-                                    <el-button type="primary" class="text-decoration-none w-100 m-0 mb-3" size="large" tag="router-link" :to="`/orders/edit/${bill.id}`">
-                                        <template #icon>
-                                            <font-awesome-icon icon="fa-solid fa-edit" size="xl" />
-                                        </template>
-                                        Edit 
-                                    </el-button>
+                                    <!-- TODO: Add payment method -->
                                     <el-button type="success" class="text-decoration-none w-100 m-0" size="large" @click="payOrder(bill.id)">
                                         <template #icon>
                                             <font-awesome-icon icon="fa-solid fa-check" size="xl" />

@@ -16,6 +16,7 @@
                             <el-row>
                                 <el-col :span="12" class="text-start">
                                     <el-text><h5>{{ dish.name }}</h5></el-text>
+                                    <el-text v-for="food in dish.foods" :key="food.id"><p class="ms-5">{{ food.name }}</p></el-text>
                                 </el-col>
                             </el-row>
                         </el-card-body>
